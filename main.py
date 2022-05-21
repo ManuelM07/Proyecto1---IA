@@ -1,20 +1,4 @@
-"""matriz = [
-          [0, 0, 0], # toma la nave 
-          [4, 0, 0], # consumido 2, 1, 0
-          [1, 0, 0]] # si el padre tiene nave -> 
-nodo_padre = None
-
-x = 0
-y = 0
-cantidad_item = 0
-nodos_expandidos = 5
-profundidad = 0
-total_items = 6
-tiene_nave = False"""
-
-from numpy import matrix
 from preferencia_amplitud import preferencia_amplitud
-
 
 nombre_lectura = "mundo"
 n = 10
@@ -41,16 +25,12 @@ def input():
 matrix_l = input()
 
 
-
 def mostrar_mundo(matrix_):
     for fila in matrix_l:
         print(fila)
 
 
-
-
 mostrar_mundo(matrix_l)
-#print(x0, y0)
 resultado = preferencia_amplitud(matrix_l, x0, y0)
 print(resultado)
 
@@ -60,4 +40,9 @@ def costo(peso, nave) -> int:
     else:
         return 1
 
+lista = ["Jenniffer", "Daniel", "Karoll", "Manuel"]
+import random 
 
+
+# pareja1 = (Jenniffer, Daniel) -> Costo uniforme
+# peraja2 = (Karoll, Manuel) -> Profundidad evitando ciclos
