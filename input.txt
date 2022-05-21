@@ -1,8 +1,0 @@
-def input():
-    with open(nombreLectura+".txt", "r") as f:
-        content = f.read().split('\n')
-        mundo = []
-        for i in range(n):
-            fila = get_data(content)
-            mundo.append(fila)
-        return mundo

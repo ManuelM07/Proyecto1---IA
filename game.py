@@ -4,39 +4,26 @@ import numpy as np
 from preferencia_amplitud import preferencia_amplitud
 import time
 
-n = 10 # matriz nxn
-nombre_lectura = "mundo"
-ancho = 640
+n = 10 #matriz nxn
+nombre_lectura = "mundo" #nombre del archivo txt sin .txt
+ancho = 640 #ancho de la pantalla
 alto = ancho
-distancia = ancho // n
+size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 2
-'''
-0 -> casilla libre
-1 -> muro
-2 -> punto de inicio
-3 -> nave1
-4 -> nave2
-5 -> item 
-6 -> aceite
-'''
-colores = {0:(255,255,255), 1:(150,75,0), 2:(0,230,230), 
-            3:(0, 255, 0), 4:(204,204,255), 5:(255,255,0), 6:(255,0,0)}
-'''
-input()
-Función para leer el archivo bajo el formato establecido en el proyecto. El
-nombre se cambia en la variable global "nombreLectura". 
-'''
-""" def input():
-    with open("src/"+nombreLectura+".txt", "r") as f:
-        content = f.read().split('\n')
-        mundo = []
-        for i in range(n):
-            fila = list(map(lambda x: int(x), content[i].split(" ")))
-            mundo.append(fila)
-        return mundo """
+ticks = 2 #velocidad del reloj, mayor valor = mayor velocidad.
 
+colores = { 0:(255,255,255), # 0 -> casilla libre
+            1:(150,75,0), # 1 -> muro
+            2:(0,230,230), # 2 -> punto de inicio
+            3:(0, 255, 0), # 3 -> nave1
+            4:(204,204,255), # 4 -> nave2
+            5:(255,255,0), # 5 -> item 
+            6:(255,0,0) } # 6 -> aceite
+'''
+input: lee el archivo .txt y carga el mundo en un array de numpy y
+encuentra y establece la posición inicial del robot (x0, y0).
+'''
 def input():
     global x0, y0
 
@@ -53,7 +40,7 @@ def input():
                 pass
         return np.array(mundo)
 
-# configuración inicial de la pantalla
+#configuración inicial de la pantalla
 def setup():
     global pantalla 
     pg.init()
@@ -63,30 +50,36 @@ def setup():
 
 #crear la cuadrícula
 def grid():
-    size = ancho
     x = 0
     y = 0
+    limite_horizontal = alto
+    limite_vertical = ancho
     for l in range(n+1):
-        pg.draw.line(pantalla, (0,0,0), (x,0), (x,size))
-        pg.draw.line(pantalla, (0,0,0), (0,y), (size,y))
-        x += distancia
-        y += distancia
+        pg.draw.line(pantalla, (0,0,0), (x,0), (x, limite_horizontal))
+        pg.draw.line(pantalla, (0,0,0), (0,y), (limite_vertical, y))
+        x += size
+        y += size
 
-# Se pinta el mundo
-def pintarMundo(mundo):
+'''
+pintar_mundo: recorrre la matriz del mundo y pinta los cuadros correspondientes
+al elemento que se encuentra en cada celda.
+'''
+def pintar_mundo(mundo):
     x = 0
     y = 0
-    tam = distancia #tamaño de cada cuadro.
-    for fila in mundo:
-        for valor in fila:
-            pg.draw.rect(pantalla, pg.__color_constructor(colores.get(valor)[0], # se pinta el cuadro dependiendo el número que tiene.
+    tam = size #tamaño de cada cuadro.
+    for fila in mundo: #recorre las filas.
+        for valor in fila: #recorre cada elemento de la fila.
+            pg.draw.rect(pantalla, pg.__color_constructor(colores.get(valor)[0], #se pinta el cuadro dependiendo el número que tiene.
                                                           colores.get(valor)[1], 
                                                           colores.get(valor)[2], 
-                                                          0), (x, y, tam, tam))            
+                                                          0), 
+                                                          (x, y, tam, tam)) #posicion x, posicion y, ancho, alto.           
             x += tam
         x = 0
         y += tam
 
+#Clase utilizada para mostrar el robot en pantalla.
 class Robot():
     def __init__(self, posx, posy, color, tam):
         self.x = posx
@@ -95,9 +88,10 @@ class Robot():
         self.tam = tam
     
     def pintar(self):
-        pg.draw.rect(pantalla, (self.color['r'], # se pinta el cuadro dependiendo el número que tiene.
-                                                      self.color['g'], 
-                                                      self.color['b']), (self.x, self.y, self.tam, self.tam)) 
+        pg.draw.rect(pantalla, #se pinta en pantalla.
+                    color, #colores del robot
+                    (self.x, self.y, self.tam, self.tam)) #posicion x, posicion y, ancho, alto.
+
     def mover(self, direccion):
         if direccion == "izquierda":
             self.x -= self.tam
@@ -109,53 +103,45 @@ class Robot():
             self.y += self.tam
 
 # bucle infinito para mostrar en patalla todos los elementos gráficos.
-def mostrarJuego(resultado):
-    i = len(resultado)-1
+def mostrar_juego(resultado):
+    i = len(resultado)-1 #para recorrer la lista (resultado) de atrás hacia adelante
+    
     while True:
-        clock.tick(ticks) #establece 200 fps.
+
+        clock.tick(ticks) 
+
         for event in pg.event.get():
-            if event.type == pg.QUIT: #para detener la ejecución al cerrar la ventana.
+            if event.type == pg.QUIT: #para detener la ejecución al cerrar la ventana
                 pg.quit()
                 sys.exit()
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
-                    robot.mover("iz")
-                elif event.key == pg.K_RIGHT:
-                    robot.mover("de")
-                elif event.key == pg.K_UP:
-                    robot.mover("ar")
-                elif event.key == pg.K_DOWN:
-                    robot.mover("ab")
       
         if (i >= 0):            
-            pintarMundo(resultado[i][1]) #se obtiene el mundo.
-            """ 
-            print("x: ", robot.x)
-            print("y: ", robot.y) """
-            robot.mover(resultado[i][0]) #se obtiene el operador. 
+            pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
+            robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
             robot.pintar()
-        grid()
-        pg.display.flip() #actualiza el mundo para mostrar nuevos cambios.
+
+        grid() #mostrar la cuadrícula.
+        pg.display.flip() #actualizar el mundo para mostrar nuevos cambios.
         i -= 1
 
 
-def mostrar_mundo(matrix):
-    for fila in matrix:
-        print(fila)
-
-setup()
+# Inicio
+setup() #pantalla
 mundo = input() #se carga la matriz del mundo.
-robot = Robot(x0*distancia, y0*distancia,{'r':100, 'g':100, 'b':230}, distancia)
+robot = Robot(x0*size, y0*size,(100,100,230), size) #se crea el robot.
 clock = pg.time.Clock() #reloj para manipular la velocidad de la ejecución.
 
 #se muestra por primera vez el mundo
-pintarMundo(mundo)
+pintar_mundo(mundo)
 robot.pintar()
 grid()
 pg.display.flip()
 
-start = time.perf_counter()
-resultado = preferencia_amplitud(mundo, x0, y0)
-end = time.perf_counter()
-print("tiempo: ", end-start)
-mostrarJuego(resultado)
+#obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
+start = time.perf_counter() #tiempo inicial.
+resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+end = time.perf_counter() #tiempo final.
+print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
+
+#mostrar el juego en pantalla.
+mostrar_juego(resultado)
