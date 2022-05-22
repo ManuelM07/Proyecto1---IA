@@ -89,7 +89,7 @@ class Robot():
     
     def pintar(self):
         pg.draw.rect(pantalla, #se pinta en pantalla.
-                    color, #colores del robot
+                    self.color, #colores del robot
                     (self.x, self.y, self.tam, self.tam)) #posicion x, posicion y, ancho, alto.
 
     def mover(self, direccion):
