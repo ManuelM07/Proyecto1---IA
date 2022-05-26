@@ -17,6 +17,7 @@ class Nodo:
         self.combustible = combustible
         self.estado = self.validar_direcciones(x, y)
         self.cantidad_item = cantidad_item
+        self.item_encontrado = False
 
     #método que comprueba si este nodo es meta, True si es meta, False en caso contrario.
     def es_meta(self) -> bool:
@@ -28,14 +29,25 @@ class Nodo:
     '''
     def actualizar_estado_casilla(self) -> None: 
         casilla_actual = self.matriz[self.x][self.y]
+        
+        #if self.combustible == 0:
+         #   self.nave = False
 
         if casilla_actual == 3 or casilla_actual == 4: #valida si es una nave
             self.combustible = 10 if casilla_actual == 3 else 20
             self.matriz[self.x][self.y] = 0 #una vez obtenida la nave, donde estaba debe haber un 0.
             self.nave = True
-        elif casilla_actual == 5:
+        elif casilla_actual == 5: # encuentra el item
             self.matriz[self.x][self.y] = 0 #lo mismo de arriba pero con el ítem.
             self.cantidad_item += 1
+            self.item_encontrado = True
+        
+        if casilla_actual == 6 and not self.nave:
+            self.costo += 4
+        elif casilla_actual == 2:
+            pass
+        else:
+            self.costo += 1
 
 
     #método para saber si el nodo hijo tiene o no nave.
@@ -49,10 +61,11 @@ class Nodo:
     para llegar a la meta y el estado del mundo en cada nodo.
     '''
     def encontrar_camino(self) -> list:
+        #print("combustible actual:", self.combustible)
         if self.nodo_padre is None:
             return []
         else:    
-            return [[self.operador, self.matriz]] + self.nodo_padre.encontrar_camino() 
+            return [[self.operador, self.matriz, self.combustible]] + self.nodo_padre.encontrar_camino() 
 
     #método que verifica que en cada dirección no se salga de la matriz.
     def validar_direcciones(self, x, y):

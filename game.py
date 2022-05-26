@@ -103,7 +103,7 @@ class Robot():
             self.y += self.tam
 
 # bucle infinito para mostrar en patalla todos los elementos gráficos.
-def mostrar_juego(resultado):
+def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
     i = len(resultado)-1 #para recorrer la lista (resultado) de atrás hacia adelante
     
     while True:
@@ -118,6 +118,7 @@ def mostrar_juego(resultado):
         if (i >= 0):            
             pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
             robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
+            print("combustible actual:", resultado[i][2])
             robot.pintar()
 
         grid() #mostrar la cuadrícula.
@@ -138,9 +139,9 @@ grid()
 pg.display.flip()
 
 #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
-start = time.perf_counter() #tiempo inicial.
+start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-end = time.perf_counter() #tiempo final.
+end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 
 #mostrar el juego en pantalla.
