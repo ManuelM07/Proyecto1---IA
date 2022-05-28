@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import numpy as np
 from preferencia_amplitud import preferencia_amplitud
+from preferente_profundidad import preferente_profundidad
 import time
 
 n = 10 #matriz nxn
@@ -14,6 +15,7 @@ y0 = 0
 ticks = 2 #velocidad del reloj, mayor valor = mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
+            # -1:(255,255,255)
             1:(150,75,0), # 1 -> muro
             2:(0,230,230), # 2 -> punto de inicio
             3:(0, 255, 0), # 3 -> nave1
@@ -140,7 +142,8 @@ pg.display.flip()
 
 #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
-resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+# resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+resultado = preferente_profundidad(mundo, x0, y0)
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 

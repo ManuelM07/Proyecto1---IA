@@ -1,7 +1,7 @@
 import numpy as np
 
 total_items = 2
-operadores = ["derecha", "arriba", "izquierda", "abajo"]
+operadores = ["derecha", "arriba", "izquierda", "abajo"] # 0, 1, 2, 3
 
 class Nodo:
     
@@ -28,6 +28,7 @@ class Nodo:
     encuentra en la posición actual del nodo (una nave o un ítem).
     '''
     def actualizar_estado_casilla(self) -> None: 
+        print(self.x, self.y)
         casilla_actual = self.matriz[self.x][self.y]
         
         #if self.combustible == 0:

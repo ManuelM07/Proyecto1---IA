@@ -1,9 +1,10 @@
 from preferencia_amplitud import preferencia_amplitud
+from preferente_profundidad import preferente_profundidad
 
 nombre_lectura = "mundo"
 n = 10
 x0 = 0 
-y0 = 0
+y0 = 0 
 
 def input():
     global x0, y0
@@ -31,7 +32,8 @@ def mostrar_mundo(matrix_):
 
 
 mostrar_mundo(matrix_l)
-resultado = preferencia_amplitud(matrix_l, x0, y0)
+# resultado = preferencia_amplitud(matrix_l, x0, y0)
+resultado = preferente_profundidad(matrix_l, x0, y0)
 print(resultado)
 
 def costo(peso, nave) -> int:
