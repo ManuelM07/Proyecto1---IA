@@ -1,7 +1,7 @@
 import numpy as np
 
 total_items = 2
-operadores = ["derecha", "arriba", "izquierda", "abajo"] # cambiar arriba, izquierda  # 0, 1, 2, 3
+operadores = ["izquierda", "abajo", "derecha", "arriba"] # cambiar arriba, izquierda  # 0, 1, 2, 3
 
 class Nodo:
     

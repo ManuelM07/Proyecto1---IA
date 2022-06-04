@@ -51,3 +51,6 @@ import random
 
 # profundidad -> 0.06885402900000015
 # Amplitud -> 1.6512395130000002 
+
+# profundidad ->  0.03309028200000008
+# Amplitud -> 0.21020363399999997 
