@@ -1,11 +1,11 @@
 import numpy as np
 
 total_items = 2
-operadores = ["derecha", "arriba", "izquierda", "abajo"] # 0, 1, 2, 3
+operadores = ["derecha", "arriba", "izquierda", "abajo"] # cambiar arriba, izquierda  # 0, 1, 2, 3
 
 class Nodo:
     
-    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item) -> None:
+    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item, matriz_aux=None) -> None:
         self.matriz = np.array(matriz)
         self.x = x
         self.y = y
@@ -18,9 +18,11 @@ class Nodo:
         self.estado = self.validar_direcciones(x, y)
         self.cantidad_item = cantidad_item
         self.item_encontrado = False
+        self.matriz_aux = np.array(matriz_aux)
 
     #método que comprueba si este nodo es meta, True si es meta, False en caso contrario.
     def es_meta(self) -> bool:
+        print(self.matriz)
         return self.cantidad_item == total_items
 
     '''

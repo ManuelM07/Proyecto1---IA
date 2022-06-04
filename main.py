@@ -48,3 +48,6 @@ import random
 
 # pareja1 = (Jenniffer, Daniel) -> Costo uniforme
 # peraja2 = (Karoll, Manuel) -> Profundidad evitando ciclos
+
+# profundidad -> 0.06885402900000015
+# Amplitud -> 1.6512395130000002 
