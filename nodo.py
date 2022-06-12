@@ -25,18 +25,20 @@ class Nodo:
         print(self.matriz)
         return self.cantidad_item == total_items
 
-    '''
-    método para obtener (si corresponde) el elemento que se 
-    encuentra en la posición actual del nodo (una nave o un ítem).
-    '''
+
     def actualizar_estado_casilla(self) -> None: 
+        """
+        método para obtener (si corresponde) el elemento que se 
+        encuentra en la posición actual del nodo (una nave o un ítem).
+        """
+
         print(self.x, self.y)
         casilla_actual = self.matriz[self.x][self.y]
         
         #if self.combustible == 0:
          #   self.nave = False
 
-        if casilla_actual == 3 or casilla_actual == 4: #valida si es una nave
+        if (casilla_actual == 3 or casilla_actual == 4) and not self.nave: # valida si es una nave y valida si ya se encuentraa en una nave
             self.combustible = 10 if casilla_actual == 3 else 20
             self.matriz[self.x][self.y] = 0 #una vez obtenida la nave, donde estaba debe haber un 0.
             self.nave = True
@@ -59,11 +61,12 @@ class Nodo:
             nuevo_combustible = self.combustible - 1 #combustible del hijo.
             return nuevo_combustible != 0 # True si tiene nave o False en caso contrario
 
-    '''
-    método que retorna una lista con parejas (operador, mundo), correspondientes al camino
-    para llegar a la meta y el estado del mundo en cada nodo.
-    '''
+
     def encontrar_camino(self) -> list:
+        '''
+        método que retorna una lista con parejas (operador, mundo), correspondientes al camino
+        para llegar a la meta y el estado del mundo en cada nodo.
+        '''
         #print("combustible actual:", self.combustible)
         if self.nodo_padre is None:
             return []

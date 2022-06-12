@@ -50,28 +50,28 @@ def crear_hijos(nodo_padre):
 
 
         if (operadores[i] == "arriba" and arriba > -1 and arriba != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "abajo" and (nodo_padre.nave != nodo_padre.nodo_padre.nave or nodo_padre.item_encontrado) or # verifica que se puede devolver
+            if (nodo_padre.operador == "abajo" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # verifica que se puede devolver
                 (nodo_padre.operador != "abajo" )): # O verifica que no se regrese
                  
                 new_nodo = Nodo(matriz_copia, x-1, y, nodo_padre, "arriba", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
                 cola.insert(0, new_nodo)
 
         elif (operadores[i] == "abajo" and abajo > -1 and abajo != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "arriba" and (nodo_padre.nave != nodo_padre.nodo_padre.nave or nodo_padre.item_encontrado) or # se verifica que se puede devolver
+            if (nodo_padre.operador == "arriba" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # se verifica que se puede devolver
                 (nodo_padre.operador != "arriba" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x+1, y, nodo_padre, "abajo", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
                 cola.insert(0, new_nodo)
 
         elif (operadores[i] == "izquierda" and izquierda > -1 and izquierda != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro). 
-            if (nodo_padre.operador == "derecha" and (nodo_padre.nave != nodo_padre.nodo_padre.nave or nodo_padre.item_encontrado) or # se verifica que se puede devolver
+            if (nodo_padre.operador == "derecha" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # se verifica que se puede devolver
                 (nodo_padre.operador != "derecha" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x, y-1, nodo_padre, "izquierda", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
                 cola.insert(0, new_nodo)
 
         elif (operadores[i] == "derecha" and derecha > -1 and derecha != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "izquierda" and (nodo_padre.nave != nodo_padre.nodo_padre.nave or nodo_padre.item_encontrado) or # se verifica que se puede devolver
+            if (nodo_padre.operador == "izquierda" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # se verifica que se puede devolver
                 (nodo_padre.operador != "izquierda" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x, y+1, nodo_padre, "derecha", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
@@ -100,10 +100,14 @@ def validar_cambio_matriz(nodo_padre, matriz, x, y):
 
 def restringir_camino(matriz, x, y):
     """ Restringe el camino por donde pasa, para evitar entrar en un ciclo. """
-    if matriz[x][y] == 6 or matriz[x][y] == -6:
+    if abs(matriz[x][y]) == 6:
         matriz[x][y] = -6
-    elif matriz[x][y] == 2 or matriz[x][y] == -2:
+    elif abs(matriz[x][y]) == 2:
         matriz[x][y] = -2
+    elif abs(matriz[x][y]) == 3:
+        matriz[x][y] = 3
+    elif abs(matriz[x][y]) == 4:
+        matriz[x][y] = 4
     else:
         matriz[x][y] = -1
     return matriz 

@@ -12,17 +12,17 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 2 #velocidad del reloj, mayor valor = mayor velocidad.
+ticks = 3 #velocidad del reloj, mayor valor = mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
-            -1:(255,255,255),
+            -1:(255,255,255), # -1 -> muro
             1:(150,75,0), # 1 -> muro
-            -2:(0,230,230), # 2 -> punto de inicio
+            -2:(0,230,230), # -2 -> punto de inicio
             2:(0,230,230), # 2 -> punto de inicio
             3:(0, 255, 0), # 3 -> nave1
             4:(204,204,255), # 4 -> nave2
             5:(255,255,0), # 5 -> item 
-            -6:(255,0,0), # 6 -> aceite
+            -6:(255,0,0), # -6 -> aceite
             6:(255,0,0) } # 6 -> aceite
 '''
 input: lee el archivo .txt y carga el mundo en un array de numpy y
@@ -64,11 +64,12 @@ def grid():
         x += size
         y += size
 
-'''
-pintar_mundo: recorrre la matriz del mundo y pinta los cuadros correspondientes
-al elemento que se encuentra en cada celda.
-'''
+
 def pintar_mundo(mundo):
+    '''
+    pintar_mundo: recorrre la matriz del mundo y pinta los cuadros correspondientes
+    al elemento que se encuentra en cada celda.
+    '''
     x = 0
     y = 0
     tam = size #tamaño de cada cuadro.
