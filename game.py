@@ -1,7 +1,8 @@
 import pygame as pg
 import sys
 import numpy as np
-from preferencia_amplitud import preferencia_amplitud
+#from preferencia_amplitud import preferencia_amplitud
+from costo_uniforme import costo_uniforme
 import time
 
 n = 10 #matriz nxn
@@ -36,7 +37,6 @@ def input():
             try: 
                 y0 = fila.index(2)
                 x0 = i
-                print("x0: ", x0, "y0:", y0)
             except ValueError:
                 pass
         return np.array(mundo)
@@ -103,6 +103,7 @@ class Robot():
         elif direccion == "abajo":
             self.y += self.tam
 
+
 # bucle infinito para mostrar en patalla todos los elementos gráficos.
 def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
     i = len(resultado)-1 #para recorrer la lista (resultado) de atrás hacia adelante
@@ -115,12 +116,21 @@ def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
             if event.type == pg.QUIT: #para detener la ejecución al cerrar la ventana
                 pg.quit()
                 sys.exit()
-      
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_p:
+                    pass
+            
+    
+
         if (i >= 0):            
-            pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
-            robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
-            print("combustible actual:", resultado[i][2])
-            robot.pintar()
+            try:
+                pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
+                robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
+                print("combustible actual:", resultado[i][2])
+                print("costo: ", resultado[i][3])
+                robot.pintar()
+            except ValueError:
+                print("No se encontró la solución.")
 
         grid() #mostrar la cuadrícula.
         pg.display.flip() #actualizar el mundo para mostrar nuevos cambios.
@@ -141,7 +151,8 @@ pg.display.flip()
 
 #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
-resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+#resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+resultado = costo_uniforme(mundo, x0, y0)
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 

@@ -3,7 +3,7 @@ from preferencia_amplitud import preferencia_amplitud
 nombre_lectura = "mundo"
 n = 10
 x0 = 0 
-y0 = 0
+y0 = 0  
 
 def input():
     global x0, y0
