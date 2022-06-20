@@ -11,13 +11,14 @@ def preferencia_amplitud(matriz, x, y):
 
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0)
     cola.append(nodo_raiz)
-
+    print("Soy el nodo raiz con inicio x: ", nodo_raiz.x, ", y: ", nodo_raiz.y)
     while True: 
         if cola == []:
             return "Falla"
         cabeza = cola[0]
         nodos_expandidos += 1
         cola = cola[1:]
+    
         cabeza.actualizar_estado_casilla()
         if cabeza.es_meta():
             print("nodos expandidos: ", nodos_expandidos)
@@ -54,21 +55,21 @@ def crear_hijos(nodo_padre):
 
 
         elif (op == "abajo" and abajo != -1 and abajo != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "arriba" and (nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado) or # se verifica que se puede devolver
+            if (nodo_padre.operador == "arriba" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado) or # se verifica que se puede devolver
                 (nodo_padre.operador != "arriba" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x+1, y, nodo_padre, "abajo", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 cola.append(new_nodo)
 
         elif (op == "izquierda" and izquierda != -1 and izquierda != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro). 
-            if (nodo_padre.operador == "derecha" and (nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado) or # se verifica que se puede devolver
+            if (nodo_padre.operador == "derecha" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado) or # se verifica que se puede devolver
                 (nodo_padre.operador != "derecha" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x, y-1, nodo_padre, "izquierda", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 cola.append(new_nodo)
 
         elif (op == "derecha" and derecha != -1 and derecha != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "izquierda" and (nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado) or # se verifica que se puede devolver
+            if (nodo_padre.operador == "izquierda" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado) or # se verifica que se puede devolver
                 (nodo_padre.operador != "izquierda" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x, y+1, nodo_padre, "derecha", aux_profundidad, nodo_padre.costo, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
