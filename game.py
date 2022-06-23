@@ -14,6 +14,7 @@ x0 = 0
 y0 = 0
 ticks = 3 #velocidad del reloj, mayor valor = mayor velocidad.
 
+
 colores = { 0:(255,255,255), # 0 -> casilla libre
             -1:(255,255,255), # -1 -> muro
             1:(150,75,0), # 1 -> muro
@@ -40,6 +41,7 @@ def input():
             try: 
                 y0 = fila.index(2)
                 x0 = i
+                print("x0: ", x0, "y0:", y0)
             except ValueError:
                 pass
         return np.array(mundo)
