@@ -15,6 +15,7 @@ class Nodo:
         self.operador = operador
         self.profundidad = profundidad
         self.costo = costo
+        self.heuristica = 0
         self.nave = nave
         self.combustible = combustible
         self.estado = self.validar_direcciones(x, y)
@@ -85,4 +86,4 @@ class Nodo:
         } 
 
     def __lt__(self, other):
-        return (self.costo < other.costo)
+        return ((self.heuristica + self.costo) < (other.heuristica + other.costo))

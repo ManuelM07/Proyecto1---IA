@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import numpy as np
 #from preferencia_amplitud import preferencia_amplitud
+from avara import avara
 from costo_uniforme import costo_uniforme
 import time
 
@@ -25,20 +26,55 @@ colores = { 0:(255,255,255), # 0 -> casilla libre
 input: lee el archivo .txt y carga el mundo en un array de numpy y
 encuentra y establece la posición inicial del robot (x0, y0).
 '''
-def input():
-    global x0, y0
+pos_item1 = {'posx': 0, 'posy': 0}
+pos_item2 = {'posx': 0, 'posy': 0}
 
+def input():
+    global x0, y0, pos_item1, pos_item2
+    items_encontrados = 0
+    print(pos_item1)
     with open(f"{nombre_lectura}.txt", "r") as f:
         content = f.read().split('\n')
-        mundo = []
-        for i in range(n):
+        mundo = np.zeros((10,10))
+        """ for i in range(n):
             fila = list(map(lambda x: int(x), content[i].split(" ")))
             mundo.append(fila)
             try: 
                 y0 = fila.index(2)
                 x0 = i
+                if items_encontrados == 0:
+                    posy = fila.index(5)
+                    pos_item1['posy'] = posy  # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    pos_item1['posx'] = i
+                    items_encontrados = items_encontrados + 1 
+                else:
+                    posy = fila.index(5)
+                    pos_item2['posy'] = posy # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    pos_item2['posx'] = i
+                    items_encontrados = items_encontrados + 1    
             except ValueError:
-                pass
+                pass """
+        for fila in range(n):
+            for columna in range(20):
+                contenido = content[fila][columna]
+                if contenido == ' ':
+                    break
+                celda = int(contenido)
+                mundo[fila][columna] = celda
+                try: 
+                    if celda == 2: 
+                        y0 = columna
+                        x0 = fila
+                    if items_encontrados == 0 and celda == 5:
+                        pos_item1['posy'] = columna  # [0 1 1 1 1 0 1 1 1 5]-> 9
+                        pos_item1['posx'] = fila
+                        items_encontrados = items_encontrados + 1 
+                    elif items_encontrados == 1 and celda == 5:
+                        pos_item2['posy'] = columna # [0 1 1 1 1 0 1 1 1 5]-> 9
+                        pos_item2['posx'] = fila
+                        items_encontrados = items_encontrados + 1    
+                except ValueError:
+                    pass
         return np.array(mundo)
 
 #configuración inicial de la pantalla
@@ -153,6 +189,10 @@ pg.display.flip()
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 #resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
 resultado = costo_uniforme(mundo, x0, y0)
+print("pos_item1", pos_item1)
+print("pos_item2", pos_item2) 
+
+#resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 
