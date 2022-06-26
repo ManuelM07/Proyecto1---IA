@@ -13,7 +13,7 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 5 #velocidad del reloj, mayor valor -> mayor velocidad.
+ticks = 3 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
             1:(150,75,0), # 1 -> muro
@@ -32,49 +32,31 @@ pos_item2 = {'posx': 0, 'posy': 0}
 def input():
     global x0, y0, pos_item1, pos_item2
     items_encontrados = 0
-    print(pos_item1)
+
     with open(f"{nombre_lectura}.txt", "r") as f:
         content = f.read().split('\n')
-        mundo = np.zeros((10,10))
-        """ for i in range(n):
+        mundo = []
+        for i in range(n):
             fila = list(map(lambda x: int(x), content[i].split(" ")))
             mundo.append(fila)
             try: 
                 y0 = fila.index(2)
-                x0 = i
+                x0 = i  
+            except ValueError:
+                pass 
+            try:
                 if items_encontrados == 0:
                     posy = fila.index(5)
                     pos_item1['posy'] = posy  # [0 1 1 1 1 0 1 1 1 5]-> 9
                     pos_item1['posx'] = i
-                    items_encontrados = items_encontrados + 1 
-                else:
-                    posy = fila.index(5)
-                    pos_item2['posy'] = posy # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    items_encontrados += 1 
+                elif items_encontrados == 1:
+                    pos_item2['posy'] = fila.index(5) # [0 1 1 1 1 0 1 1 1 5]-> 9
                     pos_item2['posx'] = i
-                    items_encontrados = items_encontrados + 1    
+                    items_encontrados += 1  
             except ValueError:
-                pass """
-        for fila in range(n):
-            for columna in range(20):
-                contenido = content[fila][columna]
-                if contenido == ' ':
-                    break
-                celda = int(contenido)
-                mundo[fila][columna] = celda
-                try: 
-                    if celda == 2: 
-                        y0 = columna
-                        x0 = fila
-                    if items_encontrados == 0 and celda == 5:
-                        pos_item1['posy'] = columna  # [0 1 1 1 1 0 1 1 1 5]-> 9
-                        pos_item1['posx'] = fila
-                        items_encontrados = items_encontrados + 1 
-                    elif items_encontrados == 1 and celda == 5:
-                        pos_item2['posy'] = columna # [0 1 1 1 1 0 1 1 1 5]-> 9
-                        pos_item2['posx'] = fila
-                        items_encontrados = items_encontrados + 1    
-                except ValueError:
-                    pass
+                pass
+
         return np.array(mundo)
 
 #configuración inicial de la pantalla
@@ -187,13 +169,16 @@ pg.display.flip()
 
 #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
-#resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-resultado = costo_uniforme(mundo, x0, y0)
-print("pos_item1", pos_item1)
-print("pos_item2", pos_item2) 
 
-#resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+#resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+#resultado = costo_uniforme(mundo, x0, y0)
+print("x=",x0,"y0=",y0)
+print("positem1:", pos_item1)
+print("positem2:", pos_item2)
+resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
+
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 
 #mostrar el juego en pantalla.

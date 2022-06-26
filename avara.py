@@ -1,8 +1,5 @@
 ﻿from nodo import Nodo, operadores
-try: 
-    import Queue as queue
-except ImportError:
-    import queue
+import queue
 
 cola_prioridad = queue.PriorityQueue() # importante tener cuidado con el límite 
 nodos_expandidos = 0
@@ -82,7 +79,6 @@ def crear_hijos(nodo_padre):
     arriba = nodo_padre.estado["arriba"] 
 
     aux_profundidad = nodo_padre.profundidad + 1 
-    costo_padre = 0
 
     for op in operadores:
 
@@ -90,41 +86,40 @@ def crear_hijos(nodo_padre):
             if ((nodo_padre.operador == "abajo" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado)) or # verifica que se puede devolver
                 (nodo_padre.operador != "abajo" )): # O verifica que no se regrese
                 
-                new_nodo = Nodo(matriz_copia, x-1, y, nodo_padre, "arriba", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                new_nodo.actualizar_estado_casilla()
+                new_nodo = Nodo(matriz_copia, x-1, y, nodo_padre, "arriba", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 heuristica = calcular_heuristica(new_nodo)
                 new_nodo.heuristica = heuristica
-                print("heuristica: ", new_nodo.heuristica)
+                new_nodo.actualizar_estado_casilla()
                 cola_prioridad.put(new_nodo)
 
         elif (op == "abajo" and abajo != -1 and abajo != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
             if ((nodo_padre.operador == "arriba" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado)) or # se verifica que se puede devolver
                 (nodo_padre.operador != "arriba" )): # O verifica que no se regrese
                 
-                new_nodo = Nodo(matriz_copia, x+1, y, nodo_padre, "abajo", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                new_nodo.actualizar_estado_casilla()
+                new_nodo = Nodo(matriz_copia, x+1, y, nodo_padre, "abajo", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 heuristica = calcular_heuristica(new_nodo)
                 new_nodo.heuristica = heuristica
+                new_nodo.actualizar_estado_casilla()
                 cola_prioridad.put(new_nodo)
 
         elif (op == "izquierda" and izquierda != -1 and izquierda != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro). 
             if ((nodo_padre.operador == "derecha" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado)) or # se verifica que se puede devolver
                 (nodo_padre.operador != "derecha" )): # O verifica que no se regrese
                 
-                new_nodo = Nodo(matriz_copia, x, y-1, nodo_padre, "izquierda", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                new_nodo.actualizar_estado_casilla()
+                new_nodo = Nodo(matriz_copia, x, y-1, nodo_padre, "izquierda", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 heuristica = calcular_heuristica(new_nodo)
                 new_nodo.heuristica = heuristica
+                new_nodo.actualizar_estado_casilla()
                 cola_prioridad.put(new_nodo)
 
         elif (op == "derecha" and derecha != -1 and derecha != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
             if ((nodo_padre.operador == "izquierda" and (nodo_padre.nodo_padre.nave != nave_hijo or nodo_padre.item_encontrado)) or # se verifica que se puede devolver
                 (nodo_padre.operador != "izquierda" )): # O verifica que no se regrese
                
-                new_nodo = Nodo(matriz_copia, x, y+1, nodo_padre, "derecha", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                new_nodo.actualizar_estado_casilla()
+                new_nodo = Nodo(matriz_copia, x, y+1, nodo_padre, "derecha", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 heuristica = calcular_heuristica(new_nodo)
                 new_nodo.heuristica = heuristica
+                new_nodo.actualizar_estado_casilla()
                 cola_prioridad.put(new_nodo)
                 
 

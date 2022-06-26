@@ -51,7 +51,6 @@ class Nodo:
         else:
             self.costo += 1
 
-
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
         if self.nave:  
@@ -86,4 +85,6 @@ class Nodo:
         } 
 
     def __lt__(self, other):
+        print("costo: ", self.costo)
+        print("otro_costo: ", other.costo)
         return ((self.heuristica + self.costo) < (other.heuristica + other.costo))
