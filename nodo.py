@@ -2,7 +2,7 @@ import numpy as np
 import functools
 
 total_items = 2
-operadores = ["derecha", "arriba", "izquierda", "abajo"]
+operadores = ["derecha", "arriba", "izquierda", "abajo"] 
 
 
 class Nodo:
@@ -46,10 +46,10 @@ class Nodo:
             self.item_encontrado = True
         
         # se calcula el costo del movimiento.
-        if casilla_actual == 6 and not self.nave:
+        """ if casilla_actual == 6 and not self.nave:
             self.costo += 4
         else:
-            self.costo += 1
+            self.costo += 1 """
 
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
@@ -68,7 +68,7 @@ class Nodo:
         if self.nodo_padre is None:
             return []
         else:    
-            return [[self.operador, self.matriz, self.combustible, self.costo]] + self.nodo_padre.encontrar_camino() 
+            return [[self.operador, self.matriz, self.combustible, self.costo, self.heuristica]] + self.nodo_padre.encontrar_camino() 
 
     #método que verifica que en cada dirección no se salga de la matriz.
     def validar_direcciones(self, x, y):

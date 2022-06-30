@@ -49,15 +49,16 @@ def calcular_heuristica(nodo):
     elif buscar_item1 and not buscar_item2: # solo busca el item1 (ya encontró el 2).
         manhattan_item1 = manhattan(nodo, pos_item1)
         distancia_total = manhattan_item1
-    else:
+    elif buscar_item1 and buscar_item2:
         manhattan_item1 = manhattan(nodo, pos_item1)
         manhattan_item2 = manhattan(nodo, pos_item2)
         if manhattan_item1 == 0:
             buscar_item1 = False
+            print("encontró el item1")
         elif manhattan_item2 == 0:
+            print("encontró el item2")
             buscar_item2 = False
         distancia_total = manhattan_item1 + manhattan_item2 # no ha encontrado ningún ítem
-    
     return distancia_total
 
 def crear_hijos(nodo_padre):
@@ -87,9 +88,9 @@ def crear_hijos(nodo_padre):
                 (nodo_padre.operador != "abajo" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x-1, y, nodo_padre, "arriba", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                heuristica = calcular_heuristica(new_nodo)
-                new_nodo.heuristica = heuristica
                 new_nodo.actualizar_estado_casilla()
+                new_nodo.heuristica = calcular_heuristica(new_nodo)
+                #new_nodo.costo += calcular_costo(new_nodo.matriz[new_nodo.x][new_nodo.y], new_nodo.nave)
                 cola_prioridad.put(new_nodo)
 
         elif (op == "abajo" and abajo != -1 and abajo != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
@@ -97,9 +98,9 @@ def crear_hijos(nodo_padre):
                 (nodo_padre.operador != "arriba" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x+1, y, nodo_padre, "abajo", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                heuristica = calcular_heuristica(new_nodo)
-                new_nodo.heuristica = heuristica
                 new_nodo.actualizar_estado_casilla()
+                new_nodo.heuristica = calcular_heuristica(new_nodo)
+                #new_nodo.costo += calcular_costo(new_nodo.matriz[new_nodo.x][new_nodo.y], new_nodo.nave)
                 cola_prioridad.put(new_nodo)
 
         elif (op == "izquierda" and izquierda != -1 and izquierda != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro). 
@@ -107,9 +108,9 @@ def crear_hijos(nodo_padre):
                 (nodo_padre.operador != "derecha" )): # O verifica que no se regrese
                 
                 new_nodo = Nodo(matriz_copia, x, y-1, nodo_padre, "izquierda", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                heuristica = calcular_heuristica(new_nodo)
-                new_nodo.heuristica = heuristica
                 new_nodo.actualizar_estado_casilla()
+                new_nodo.heuristica = calcular_heuristica(new_nodo)
+                #new_nodo.costo += calcular_costo(new_nodo.matriz[new_nodo.x][new_nodo.y], new_nodo.nave)
                 cola_prioridad.put(new_nodo)
 
         elif (op == "derecha" and derecha != -1 and derecha != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
@@ -117,9 +118,7 @@ def crear_hijos(nodo_padre):
                 (nodo_padre.operador != "izquierda" )): # O verifica que no se regrese
                
                 new_nodo = Nodo(matriz_copia, x, y+1, nodo_padre, "derecha", aux_profundidad, 0, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
-                heuristica = calcular_heuristica(new_nodo)
-                new_nodo.heuristica = heuristica
                 new_nodo.actualizar_estado_casilla()
+                new_nodo.heuristica = calcular_heuristica(new_nodo)
+                #new_nodo.costo += calcular_costo(new_nodo.matriz[new_nodo.x][new_nodo.y], new_nodo.nave)
                 cola_prioridad.put(new_nodo)
-                
-

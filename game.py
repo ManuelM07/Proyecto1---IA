@@ -13,7 +13,7 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 3 #velocidad del reloj, mayor valor -> mayor velocidad.
+ticks = 1 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
             1:(150,75,0), # 1 -> muro
@@ -47,9 +47,17 @@ def input():
             try:
                 if items_encontrados == 0:
                     posy = fila.index(5)
+                    print("fila: ", fila)
+                    print("i:",i)
                     pos_item1['posy'] = posy  # [0 1 1 1 1 0 1 1 1 5]-> 9
                     pos_item1['posx'] = i
                     items_encontrados += 1 
+                    try: 
+                        pos_item2['posy'] = fila.index(5, posy+1) # [0 1 1 1 1 0 1 1 1 5]-> 9
+                        pos_item2['posx'] = i
+                        items_encontrados += 1
+                    except ValueError:
+                        pass 
                 elif items_encontrados == 1:
                     pos_item2['posy'] = fila.index(5) # [0 1 1 1 1 0 1 1 1 5]-> 9
                     pos_item2['posx'] = i
@@ -145,7 +153,8 @@ def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
                 pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
                 robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
                 print("combustible actual:", resultado[i][2])
-                print("costo: ", resultado[i][3])
+                #print("costo: ", resultado[i][3])
+                print("heuristica: ", resultado[i][4])
                 robot.pintar()
             except ValueError:
                 print("No se encontró la solución.")

@@ -1,8 +1,5 @@
 from nodo import Nodo, operadores
-try: 
-    import Queue as queue
-except ImportError:
-    import queue
+import queue
 
 cola_prioridad = queue.PriorityQueue() # importante tener cuidado con el límite 
 nodos_expandidos = 0
