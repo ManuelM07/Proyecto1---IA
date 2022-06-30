@@ -7,18 +7,21 @@ contador = 0
 pos_item1 = {}
 pos_item2 = {}
 buscar_item1 = True
-buscar_item2 = True   
+buscar_item2 = True 
+distancia_items = 0  
 
 # funcion que implementa el algoritmo de búsqueda preferente por amplitud.
 def avara(matriz, x, y, posItem1, posItem2):
     
-    global cola_prioridad, nodos_expandidos, pos_item1, pos_item2
+    global cola_prioridad, nodos_expandidos, pos_item1, pos_item2, distancia_items
 
     pos_item1 = posItem1
     pos_item2 = posItem2
 
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0)
     cola_prioridad.put(nodo_raiz)
+
+    distancia_items = manhattan(pos_item1["x"], pos_item1["y"], pos_item2["x"], pos_item2["y"])
 
     while True: 
         if cola_prioridad.empty():
@@ -36,36 +39,40 @@ def avara(matriz, x, y, posItem1, posItem2):
         crear_hijos(cabeza)            
 
 # función que calcula la distancia de manhattan de un nodo con respecto a un ítem.
-def manhattan(nodo, pos_item):
-    resultado = abs(nodo.x - pos_item['posx']) + abs(nodo.y - pos_item['posy'])
+def manhattan(x1, y1, x2, y2): # nodo, pos_item
+    # resultado = abs(nodo.x - pos_item['posx']) + abs(nodo.y - pos_item['posy'])
+    resultado = abs(x2 - x1) + abs(y2 - y1)
     return resultado
 
 def calcular_heuristica(nodo):
-    global buscar_item1, buscar_item2
+    global buscar_item1, buscar_item2, distancia_items
+    #  min(mh(agente, item1) + mh(item1, item2), mh(agente, item2) + mh(item1, item2))
 
+    
     if buscar_item2 and not buscar_item1: # solo busca el item2 (ya encontró el 1).
-        manhattan_item2 = manhattan(nodo, pos_item2)
-        distancia_total = manhattan_item2 
+        manhattan_item = manhattan(nodo.x, nodo.y, pos_item2["x"], pos_item2['y'])
+        distancia_total = manhattan_item
     elif buscar_item1 and not buscar_item2: # solo busca el item1 (ya encontró el 2).
-        manhattan_item1 = manhattan(nodo, pos_item1)
-        distancia_total = manhattan_item1
+        manhattan_item = manhattan(nodo.x, nodo.y, pos_item1["x"], pos_item1['y'])
+        distancia_total = manhattan_item
     elif buscar_item1 and buscar_item2:
-        manhattan_item1 = manhattan(nodo, pos_item1)
-        manhattan_item2 = manhattan(nodo, pos_item2)
+        manhattan_item1 = manhattan(nodo.x, nodo.y, pos_item1["x"], pos_item1['y'])
+        manhattan_item2 = manhattan(nodo.x, nodo.y, pos_item2["x"], pos_item2['y'])
         if manhattan_item1 == 0:
             buscar_item1 = False
             print("encontró el item1")
         elif manhattan_item2 == 0:
             print("encontró el item2")
             buscar_item2 = False
-        distancia_total = manhattan_item1 + manhattan_item2 # no ha encontrado ningún ítem
+
+        distancia_total = min((manhattan_item1 + distancia_items), (manhattan_item2 + distancia_items))  # manhattan_item1 + manhattan_item2 # no ha encontrado ningún ítem
     return distancia_total
 
 def crear_hijos(nodo_padre):
     global contador 
     global cola_prioridad
 
-    contador += 1
+    contador += 1 
 
     nave_hijo = nodo_padre.validar_nave()
     nuevo_combustible = nodo_padre.combustible-1 if nave_hijo else 0

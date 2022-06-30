@@ -85,6 +85,6 @@ class Nodo:
         } 
 
     def __lt__(self, other):
-        print("costo: ", self.costo)
-        print("otro_costo: ", other.costo)
+        #print("costo: ", self.costo)
+        #print("otro_costo: ", other.costo)
         return ((self.heuristica + self.costo) < (other.heuristica + other.costo))

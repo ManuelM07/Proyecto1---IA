@@ -26,8 +26,8 @@ colores = { 0:(255,255,255), # 0 -> casilla libre
 input: lee el archivo .txt y carga el mundo en un array de numpy y
 encuentra y establece la posición inicial del robot (x0, y0).
 '''
-pos_item1 = {'posx': 0, 'posy': 0}
-pos_item2 = {'posx': 0, 'posy': 0}
+pos_item1 = {'x': 0, 'y': 0}
+pos_item2 = {'x': 0, 'y': 0}
 
 def input():
     global x0, y0, pos_item1, pos_item2
@@ -46,21 +46,21 @@ def input():
                 pass 
             try:
                 if items_encontrados == 0:
-                    posy = fila.index(5)
+                    y = fila.index(5)
                     print("fila: ", fila)
                     print("i:",i)
-                    pos_item1['posy'] = posy  # [0 1 1 1 1 0 1 1 1 5]-> 9
-                    pos_item1['posx'] = i
+                    pos_item1['y'] = y  # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    pos_item1['x'] = i
                     items_encontrados += 1 
                     try: 
-                        pos_item2['posy'] = fila.index(5, posy+1) # [0 1 1 1 1 0 1 1 1 5]-> 9
-                        pos_item2['posx'] = i
+                        pos_item2['y'] = fila.index(5, y+1) # [0 1 1 1 1 0 1 1 1 5]-> 9
+                        pos_item2['x'] = i
                         items_encontrados += 1
                     except ValueError:
                         pass 
                 elif items_encontrados == 1:
-                    pos_item2['posy'] = fila.index(5) # [0 1 1 1 1 0 1 1 1 5]-> 9
-                    pos_item2['posx'] = i
+                    pos_item2['y'] = fila.index(5) # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    pos_item2['x'] = i
                     items_encontrados += 1  
             except ValueError:
                 pass
@@ -108,9 +108,9 @@ def pintar_mundo(mundo):
 
 #Clase utilizada para mostrar el robot en pantalla.
 class Robot():
-    def __init__(self, posx, posy, color, tam):
-        self.x = posy
-        self.y = posx
+    def __init__(self, x, y, color, tam):
+        self.x = y
+        self.y = x
         self.color = color
         self.tam = tam
     
