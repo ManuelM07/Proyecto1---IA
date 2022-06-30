@@ -1,4 +1,4 @@
-from preferencia_amplitud import preferencia_amplitud
+# from preferencia_amplitud import preferencia_amplitud
 from preferente_profundidad import preferente_profundidad
 
 nombre_lectura = "mundo"

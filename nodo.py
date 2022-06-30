@@ -91,4 +91,4 @@ class Nodo:
         } 
 
     def __lt__(self, other):
-        return (self.costo < other.costo)
+        return (self.costo < other.costo) # (self.costo + self.heuristica) < (other.costo + other.heuristica)

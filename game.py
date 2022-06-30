@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
 import numpy as np
-from preferente_amplitud import preferente_amplitud
+# from preferente_amplitud import preferente_amplitud
 from preferente_profundidad import preferente_profundidad
 from costo_uniforme import costo_uniforme
 import time
@@ -158,8 +158,8 @@ pg.display.flip()
 #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 # resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-resultado = preferente_profundidad(mundo, x0, y0)
-# resultado = costo_uniforme(mundo, x0, y0)
+# resultado = preferente_profundidad(mundo, x0, y0)
+resultado = costo_uniforme(mundo, x0, y0)
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 
