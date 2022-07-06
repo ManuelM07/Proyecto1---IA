@@ -3,11 +3,12 @@ import sys, os
 import numpy as np
 from algoritmos.avara import avara
 from algoritmos.costo_uniforme import costo_uniforme
+from algoritmos.preferencia_amplitud import preferencia_amplitud
 import time
 from juego.robot import Robot
 
 n = 10 #matriz nxn
-nombre_lectura = "mundo" #nombre del archivo txt sin .txt
+nombre_lectura = "prueba1" #nombre del archivo txt sin .txt
 ancho = 640 #ancho de la pantalla
 alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
@@ -49,8 +50,6 @@ def game():
                 try:
                     if items_encontrados == 0:
                         y = fila.index(5)
-                        print("fila: ", fila)
-                        print("i:",i)
                         pos_item1['y'] = y  # [0 1 1 1 1 0 1 1 1 5]-> 9
                         pos_item1['x'] = i
                         items_encontrados += 1 
@@ -129,8 +128,8 @@ def game():
                 try:
                     pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
                     robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
-                    print("combustible actual:", resultado[i][2])
-                    print("costo: ", resultado[i][3])
+                    #print("combustible actual:", resultado[i][2])
+                    #print("costo: ", resultado[i][3])
                     #print("heuristica: ", resultado[i][4])
                     robot.pintar()
                 except ValueError:
@@ -156,11 +155,8 @@ def game():
     #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
     start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 
-    #resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-    resultado = costo_uniforme(mundo, x0, y0)
-    #print("x=",x0,"y0=",y0)
-    #print("positem1:", pos_item1)
-    #print("positem2:", pos_item2)
+    resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+    #resultado = costo_uniforme(mundo, x0, y0)
     #resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
 
     end = time.perf_counter() #tiempo final. nueva cantidad en segundos
@@ -169,3 +165,5 @@ def game():
 
     #mostrar el juego en pantalla.
     mostrar_juego(resultado)
+
+game()
