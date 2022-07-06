@@ -1,4 +1,4 @@
-﻿from nodo import Nodo, operadores
+﻿from algoritmos.nodo import Nodo, operadores
 import queue
 
 cola_prioridad = queue.PriorityQueue() # importante tener cuidado con el límite 
