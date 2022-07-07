@@ -14,7 +14,7 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 4 #velocidad del reloj, mayor valor -> mayor velocidad.
+ticks = 2 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
             1:(150,75,0), # 1 -> muro
@@ -153,9 +153,9 @@ def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
             try:
                 pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
                 robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
-                #print("combustible actual:", resultado[i][2])
+                print("combustible actual:", resultado[i][2])
                 #print("costo: ", resultado[i][3])
-                #print("heuristica: ", resultado[i][4])
+                print("heuristica: ", resultado[i][4])
                 robot.pintar()
             except ValueError:
                 print("No se encontró la solución.")
@@ -181,11 +181,11 @@ pg.display.flip()
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 
 #resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-#resultado = costo_uniforme(mundo, x0, y0)
+resultado = costo_uniforme(mundo, x0, y0)
 #print("x=",x0,"y0=",y0)
 #print("positem1:", pos_item1)
 #print("positem2:", pos_item2)
-resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+#resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
 #resultado = a_estrella(mundo, x0, y0, pos_item1, pos_item2)
 
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos

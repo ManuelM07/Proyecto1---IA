@@ -37,7 +37,7 @@ class Nodo:
          #   self.nave = False
 
         if casilla_actual == 3 or casilla_actual == 4: #valida si es una nave
-            self.combustible = 10 if casilla_actual == 3 else 20
+            self.combustible = 11 if casilla_actual == 3 else 21
             self.matriz[self.x][self.y] = 0 #una vez obtenida la nave, donde estaba debe haber un 0.
             self.nave = True
         elif casilla_actual == 5: # encuentra el item
@@ -85,6 +85,7 @@ class Nodo:
         } 
 
     def __lt__(self, other):
-        #print("costo: ", self.costo)
-        #print("otro_costo: ", other.costo)
+        #print("costo: ", self.costo)  
+        #print("otro_costo: ", other.costo) 
         return ((self.heuristica + self.costo) < (other.heuristica + other.costo))
+        #return ((self.heuristica ) < (other.heuristica ))
