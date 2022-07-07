@@ -46,10 +46,10 @@ class Nodo:
             self.item_encontrado = True
         
         # se calcula el costo del movimiento.
-        """ if casilla_actual == 6 and not self.nave:
+        if casilla_actual == 6 and not self.nave:
             self.costo += 4
         else:
-            self.costo += 1 """
+            self.costo += 1
 
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
