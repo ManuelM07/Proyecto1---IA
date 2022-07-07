@@ -11,7 +11,7 @@ buscar_item2 = True
 distancia_items = 0  
 
 # funcion que implementa el algoritmo de búsqueda preferente por amplitud.
-def avara(matriz, x, y, posItem1, posItem2):
+def a_estrella(matriz, x, y, posItem1, posItem2):
     
     global cola_prioridad, nodos_expandidos, pos_item1, pos_item2, distancia_items
 

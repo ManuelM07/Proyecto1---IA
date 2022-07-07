@@ -3,6 +3,7 @@ import sys
 import numpy as np
 #from preferencia_amplitud import preferencia_amplitud
 from avara import avara
+from a_estrella import a_estrella
 from costo_uniforme import costo_uniforme
 import time
 
@@ -180,11 +181,12 @@ pg.display.flip()
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 
 #resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-resultado = costo_uniforme(mundo, x0, y0)
+#resultado = costo_uniforme(mundo, x0, y0)
 #print("x=",x0,"y0=",y0)
 #print("positem1:", pos_item1)
 #print("positem2:", pos_item2)
-#resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+#resultado = a_estrella(mundo, x0, y0, pos_item1, pos_item2)
 
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 
