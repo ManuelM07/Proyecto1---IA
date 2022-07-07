@@ -34,7 +34,7 @@ class Nodo:
          #   self.nave = False
 
         if casilla_actual == 3 or casilla_actual == 4: #valida si es una nave
-            self.combustible = 10 if casilla_actual == 3 else 20
+            self.combustible = 11 if casilla_actual == 3 else 21
             self.matriz[self.x][self.y] = 0 #una vez obtenida la nave, donde estaba debe haber un 0.
             self.nave = True
         elif casilla_actual == 5: # encuentra el item
@@ -42,10 +42,9 @@ class Nodo:
             self.cantidad_item += 1
             self.item_encontrado = True
         
+        # se calcula el costo del movimiento.
         if casilla_actual == 6 and not self.nave:
             self.costo += 4
-        elif casilla_actual == 2:
-            pass
         else:
             self.costo += 1
 
@@ -55,6 +54,8 @@ class Nodo:
         if self.nave:  
             nuevo_combustible = self.combustible - 1 #combustible del hijo.
             return nuevo_combustible != 0 # True si tiene nave o False en caso contrario
+        else:
+            return False
 
     '''
     método que retorna una lista con parejas (operador, mundo), correspondientes al camino
