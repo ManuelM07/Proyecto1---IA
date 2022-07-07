@@ -8,13 +8,13 @@ import time
 from juego.robot import Robot
 
 n = 10 #matriz nxn
-nombre_lectura = "prueba1" #nombre del archivo txt sin .txt
+nombre_lectura = "mundo" #nombre del archivo txt sin .txt
 ancho = 640 #ancho de la pantalla
 alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 1 #velocidad del reloj, mayor valor -> mayor velocidad.
+ticks = 3 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
             1:(150,75,0), # 1 -> muro
@@ -128,7 +128,7 @@ def game():
                 try:
                     pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
                     robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
-                    #print("combustible actual:", resultado[i][2])
+                    print("combustible actual:", resultado[i][2])
                     #print("costo: ", resultado[i][3])
                     #print("heuristica: ", resultado[i][4])
                     robot.pintar()

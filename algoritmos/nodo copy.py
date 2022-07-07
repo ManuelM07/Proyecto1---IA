@@ -14,6 +14,7 @@ class Nodo:
         self.profundidad = profundidad
         self.costo = costo
         self.heuristica = 0
+        self.tipo_nave = 0
         self.nave = nave
         self.combustible = combustible
         self.estado = self.validar_direcciones(x, y)
@@ -32,7 +33,8 @@ class Nodo:
         casilla_actual = self.matriz[self.x][self.y]
 
         if casilla_actual == 3 or casilla_actual == 4:
-            self.combustible = 11 if casilla_actual == 3 else 21
+            self.tipo_nave = 3 if casilla_actual == 3 else 4 # casilla 3 -> nave1, casilla 4 -> nave2
+            self.combustible = 10 if casilla_actual == 3 else 20
             self.nave = True
         elif casilla_actual == 5: # encuentra el item
             self.cantidad_item += 1
