@@ -16,14 +16,11 @@ def preferente_profundidad(matriz, x, y):
         if cola == []:
             return "Falla"
         cabeza = cola[0]
-
         nodos_expandidos += 1
         cola = cola[1:]
-        print(cabeza.costo)
-        print(cabeza.costo)
         if cabeza.es_meta():
-            print("nodos expandidos:", nodos_expandidos)
-            print("profundidad:", cabeza.profundidad)
+            print("nodos expandidos: ", nodos_expandidos)
+            print("profundidad: ", cabeza.profundidad)
             print("costo:", cabeza.costo)
             return cabeza.encontrar_camino() 
         crear_hijos(cabeza)            
@@ -40,10 +37,9 @@ def crear_hijos(nodo_padre):
     y = nodo_padre.y
 
     aux_profundidad = nodo_padre.profundidad + 1 
-    costo_padre = nodo_padre.costo
-
+    matriz_copia = validar_cambio_matriz(nodo_padre, matriz_copia, x, y).copy()
     matriz_copia = restringir_camino(matriz_copia, x, y).copy()
-    matriz_copia = validar_cambio_matriz(nodo_padre, matriz_copia, x, y).copy() 
+    costo_padre = nodo_padre.costo
 
     valores_casillas = { "arriba": nodo_padre.estado["arriba"], 
                          "abajo": nodo_padre.estado["abajo"], 
@@ -55,11 +51,13 @@ def crear_hijos(nodo_padre):
 
     nuevas_posiciones = { "arriba": [x-1, y], "abajo": [x+1, y], "izquierda": [x, y-1], "derecha": [x, y+1] }
 
+
     for i in range(len(operadores)-1, -1, -1):
+
 
         casilla_siguiente = valores_casillas[operadores[i]] # guarda el valor de la casilla siguiente (en la que está cada hijo).
         
-        if (casilla_siguiente != -1 and casilla_siguiente != 1):
+        if (casilla_siguiente >= 0 and casilla_siguiente != 1):
             se_devuelve = nodo_padre.operador == opuesto_de[operadores[i]]
             if (nodo_padre.nodo_padre):
                 tipo_nave_diferentes = nodo_padre.nave != nave_hijo
@@ -71,51 +69,9 @@ def crear_hijos(nodo_padre):
 
                 new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, operadores[i], aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
                 new_nodo.actualizar_estado_casilla()
+                print(matriz_copia)
                 cola.insert(0, new_nodo)
 
-
-    '''
-    derecha = nodo_padre.estado["derecha"]
-    izquierda = nodo_padre.estado["izquierda"]
-    abajo = nodo_padre.estado["abajo"]
-    arriba = nodo_padre.estado["arriba"]
-    costo_padre = nodo_padre.costo
-
-    for i in range(len(operadores)-1, -1, -1):
-
-
-        if (operadores[i] == "arriba" and arriba > -1 and arriba != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "abajo" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # verifica que se puede devolver
-                (nodo_padre.operador != "abajo" )): # O verifica que no se regrese
-                 
-                new_nodo = Nodo(matriz_copia, x-1, y, nodo_padre, "arriba", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
-                new_nodo.actualizar_estado_casilla()
-                cola.insert(0, new_nodo)
-
-        elif (operadores[i] == "abajo" and abajo > -1 and abajo != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "arriba" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # se verifica que se puede devolver
-                (nodo_padre.operador != "arriba" )): # O verifica que no se regrese
-                
-                new_nodo = Nodo(matriz_copia, x+1, y, nodo_padre, "abajo", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
-                new_nodo.actualizar_estado_casilla()
-                cola.insert(0, new_nodo)
-
-        elif (operadores[i] == "izquierda" and izquierda > -1 and izquierda != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro). 
-            if (nodo_padre.operador == "derecha" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # se verifica que se puede devolver
-                (nodo_padre.operador != "derecha" )): # O verifica que no se regrese
-                
-                new_nodo = Nodo(matriz_copia, x, y-1, nodo_padre, "izquierda", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
-                new_nodo.actualizar_estado_casilla()
-                cola.insert(0, new_nodo)
-
-        elif (operadores[i] == "derecha" and derecha > -1 and derecha != 1): #verifica que se puede mover (no sale de la matriz y no hay un muro).
-            if (nodo_padre.operador == "izquierda" and (nodo_padre.nave != nodo_padre.nodo_padre.nave) or # se verifica que se puede devolver
-                (nodo_padre.operador != "izquierda" )): # O verifica que no se regrese
-                
-                new_nodo = Nodo(matriz_copia, x, y+1, nodo_padre, "derecha", aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
-                new_nodo.actualizar_estado_casilla()
-                cola.insert(0, new_nodo)
-'''
 
 def validar_cambio_matriz(nodo_padre, matriz, x, y):
     """ Se valida si es necesario hacer un cambio a la matriz,
@@ -124,9 +80,8 @@ def validar_cambio_matriz(nodo_padre, matriz, x, y):
         pero quitando el item o la nave que se encuentre en la posición inicial. """
 
     try:
-        print(nodo_padre.item_encontrado)
-        if (nodo_padre.combustible == 20) or (nodo_padre.combustible == 10 and nodo_padre.nodo_padre.combustible != 11) or nodo_padre.item_encontrado:
-            
+        # print(nodo_padre.item_encontrado)
+        if (nodo_padre.combustible == 21) or (nodo_padre.combustible == 11 and nodo_padre.nodo_padre.combustible != 12) or nodo_padre.item_encontrado:
             nodo_padre.matriz_aux[x][y] = 0
             nodo_padre.matriz = np.array(nodo_padre.matriz_aux)
             nodo_padre.estado = nodo_padre.validar_direcciones(x, y)
@@ -144,10 +99,6 @@ def restringir_camino(matriz, x, y):
         matriz[x][y] = -6
     elif abs(matriz[x][y]) == 2:
         matriz[x][y] = -2
-    elif abs(matriz[x][y]) == 3:
-        matriz[x][y] = 3
-    elif abs(matriz[x][y]) == 4:
-        matriz[x][y] = 4
     else:
         matriz[x][y] = -1
     return matriz 
