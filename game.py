@@ -3,6 +3,9 @@ import sys
 import numpy as np
 # from preferente_amplitud import preferente_amplitud
 from preferente_profundidad import preferente_profundidad
+#from preferencia_amplitud import preferencia_amplitud
+from avara import avara
+from a_estrella import a_estrella
 from costo_uniforme import costo_uniforme
 from algoritmo_estrella import estrella
 import time
@@ -195,5 +198,11 @@ result = [x[0] for x in resultado]
 result.reverse()
 print(result)
 
+end = time.perf_counter() #tiempo final. nueva cantidad en segundos
+
+print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
+movimientos = [x[0] for x in resultado]
+movimientos.reverse()
+print("movimientos:", movimientos)
 #mostrar el juego en pantalla.
 mostrar_juego(resultado)

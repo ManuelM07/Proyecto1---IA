@@ -14,6 +14,7 @@ class Nodo:
         self.operador = operador
         self.profundidad = profundidad
         self.costo = costo
+        self.heuristica = 0
         self.nave = nave
         self.combustible = combustible
         self.estado = self.validar_direcciones(x, y)
@@ -54,7 +55,6 @@ class Nodo:
         else:
             self.costo += 1
 
-
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
         if self.nave:  
@@ -72,7 +72,7 @@ class Nodo:
         if self.nodo_padre is None:
             return []
         else:    
-            return [[self.operador, self.matriz, self.combustible, self.costo]] + self.nodo_padre.encontrar_camino() 
+            return [[self.operador, self.matriz, self.combustible, self.costo, self.heuristica]] + self.nodo_padre.encontrar_camino() 
 
     #método que verifica que en cada dirección no se salga de la matriz.
     def validar_direcciones(self, x, y):
