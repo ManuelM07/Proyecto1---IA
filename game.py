@@ -144,6 +144,9 @@ start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
+result = [x[0] for x in resultado]
+result.reverse()
+print(result)
 
 #mostrar el juego en pantalla.
 mostrar_juego(resultado)

@@ -16,7 +16,7 @@ def preferencia_amplitud(matriz, x, y):
         if cola == []:
             return "Falla"
         cabeza = cola[0]
-        nodos_expandidos =  nodos_expandidos + 1
+        nodos_expandidos = nodos_expandidos + 1
         cola = cola[1:]
         #cabeza.actualizar_estado_casilla()
         if cabeza.es_meta():
@@ -47,6 +47,7 @@ def crear_hijos(nodo_padre):
                          "derecha": nodo_padre.estado["derecha"] }
     
     opuesto_de = { "arriba":"abajo", "abajo":"arriba", "izquierda":"derecha", "derecha":"izquierda" }
+    tipo_nave_diferentes = False
 
     nuevas_posiciones = { "arriba": [x-1, y], "abajo": [x+1, y], "izquierda": [x, y-1], "derecha": [x, y+1] }
 
