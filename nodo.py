@@ -2,7 +2,7 @@ import numpy as np
 import functools
 
 total_items = 2
-operadores = ["arriba", "derecha", "abajo", "izquierda"]
+operadores = ["arriba", "izquierda", "abajo", "derecha",]
 
 class Nodo:
     
@@ -24,7 +24,7 @@ class Nodo:
 
     #método que comprueba si este nodo es meta, True si es meta, False en caso contrario.
     def es_meta(self) -> bool:
-        print(self.matriz)
+        #print(self.matriz)
         return self.cantidad_item == total_items
 
 

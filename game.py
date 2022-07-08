@@ -3,7 +3,8 @@ import sys
 import numpy as np
 # from preferente_amplitud import preferente_amplitud
 from preferente_profundidad import preferente_profundidad
-#from preferencia_amplitud import preferencia_amplitud
+from preferencia_amplitud import preferencia_amplitud
+from preferente_profundidad import preferente_profundidad
 from avara import avara
 from a_estrella import a_estrella
 from costo_uniforme import costo_uniforme
@@ -17,14 +18,17 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 1 #velocidad del reloj, mayor valor -> mayor velocidad.
+ticks = 5 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
+            -1:(255,255,255), # -1 -> muro
             1:(150,75,0), # 1 -> muro
+            -2:(0,230,230), # -2 -> punto de inicio
             2:(0,230,230), # 2 -> punto de inicio
             3:(0, 255, 0), # 3 -> nave1
             4:(204,204,255), # 4 -> nave2
             5:(255,255,0), # 5 -> item 
+            -6:(255,0,0), # -6 -> aceite
             6:(255,0,0) } # 6 -> aceite
 '''
 input: lee el archivo .txt y carga el mundo en un array de numpy y
@@ -188,8 +192,14 @@ start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 #print("x=",x0,"y0=",y0)
 #print("positem1:", pos_item1)
 #print("positem2:", pos_item2)
+
+
+#resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+#resultado = costo_uniforme(mundo, x0, y0)
+resultado = preferente_profundidad(mundo, x0, y0)
 #resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
-resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
+#resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
+
 
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 
