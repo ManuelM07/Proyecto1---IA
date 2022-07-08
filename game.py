@@ -191,6 +191,8 @@ resultado = costo_uniforme(mundo, x0, y0)
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
 
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
-
+movimientos = [x[0] for x in resultado]
+movimientos.reverse()
+print("movimientos:", movimientos)
 #mostrar el juego en pantalla.
 mostrar_juego(resultado)
