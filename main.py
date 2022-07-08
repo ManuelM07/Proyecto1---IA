@@ -1,9 +1,10 @@
-from preferencia_amplitud import preferencia_amplitud
+# from preferencia_amplitud import preferencia_amplitud
+from preferente_profundidad import preferente_profundidad
 
 nombre_lectura = "mundo"
 n = 10
 x0 = 0 
-y0 = 0
+y0 = 0 
 
 def input():
     global x0, y0
@@ -31,7 +32,8 @@ def mostrar_mundo(matrix_):
 
 
 mostrar_mundo(matrix_l)
-resultado = preferencia_amplitud(matrix_l, x0, y0)
+# resultado = preferencia_amplitud(matrix_l, x0, y0)
+resultado = preferente_profundidad(matrix_l, x0, y0)
 print(resultado)
 
 def costo(peso, nave) -> int:
@@ -46,3 +48,9 @@ import random
 
 # pareja1 = (Jenniffer, Daniel) -> Costo uniforme
 # peraja2 = (Karoll, Manuel) -> Profundidad evitando ciclos
+
+# profundidad -> 0.06885402900000015
+# Amplitud -> 1.6512395130000002 
+
+# profundidad ->  0.03309028200000008
+# Amplitud -> 0.21020363399999997 

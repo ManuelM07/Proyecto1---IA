@@ -1,11 +1,12 @@
 import numpy as np
+import functools
 
 total_items = 2
 operadores = ["arriba", "derecha", "abajo", "izquierda"]
 
 class Nodo:
     
-    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item) -> None:
+    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item, matriz_aux=None) -> None:
         self.matriz = np.array(matriz)
         self.x = x
         self.y = y
@@ -18,16 +19,21 @@ class Nodo:
         self.estado = self.validar_direcciones(x, y)
         self.cantidad_item = cantidad_item
         self.item_encontrado = False
+        self.matriz_aux = np.array(matriz_aux)
 
     #método que comprueba si este nodo es meta, True si es meta, False en caso contrario.
     def es_meta(self) -> bool:
+        print(self.matriz)
         return self.cantidad_item == total_items
 
-    '''
-    método para obtener (si corresponde) el elemento que se 
-    encuentra en la posición actual del nodo (una nave o un ítem).
-    '''
+
     def actualizar_estado_casilla(self) -> None: 
+        """
+        método para obtener (si corresponde) el elemento que se 
+        encuentra en la posición actual del nodo (una nave o un ítem).
+        """
+
+        print(self.x, self.y)
         casilla_actual = self.matriz[self.x][self.y]
         
         #if self.combustible == 0:
@@ -57,16 +63,16 @@ class Nodo:
         else:
             return False
 
-    '''
-    método que retorna una lista con parejas (operador, mundo), correspondientes al camino
-    para llegar a la meta y el estado del mundo en cada nodo.
-    '''
     def encontrar_camino(self) -> list:
+        '''
+        método que retorna una lista con parejas (operador, mundo), correspondientes al camino
+        para llegar a la meta y el estado del mundo en cada nodo.
+        '''
         #print("combustible actual:", self.combustible)
         if self.nodo_padre is None:
             return []
         else:    
-            return [[self.operador, self.matriz, self.combustible]] + self.nodo_padre.encontrar_camino() 
+            return [[self.operador, self.matriz, self.combustible, self.costo]] + self.nodo_padre.encontrar_camino() 
 
     #método que verifica que en cada dirección no se salga de la matriz.
     def validar_direcciones(self, x, y):
@@ -81,3 +87,6 @@ class Nodo:
             "arriba": arriba,
             "abajo": abajo,    
         } 
+
+    def __lt__(self, other):
+        return ((self.heuristica + self.costo) < (other.heuristica + other.costo))

@@ -1,7 +1,10 @@
 import pygame as pg
 import sys
 import numpy as np
-from preferencia_amplitud import preferencia_amplitud
+# from preferente_amplitud import preferente_amplitud
+from preferente_profundidad import preferente_profundidad
+from costo_uniforme import costo_uniforme
+from algoritmo_estrella import estrella
 import time
 
 n = 10 #matriz nxn
@@ -11,7 +14,7 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 1 #velocidad del reloj, mayor valor = mayor velocidad.
+ticks = 1 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
             1:(150,75,0), # 1 -> muro
@@ -24,8 +27,12 @@ colores = { 0:(255,255,255), # 0 -> casilla libre
 input: lee el archivo .txt y carga el mundo en un array de numpy y
 encuentra y establece la posición inicial del robot (x0, y0).
 '''
+pos_item1 = {'x': 0, 'y': 0}
+pos_item2 = {'x': 0, 'y': 0}
+
 def input():
-    global x0, y0
+    global x0, y0, pos_item1, pos_item2
+    items_encontrados = 0
 
     with open(f"{nombre_lectura}.txt", "r") as f:
         content = f.read().split('\n')
@@ -35,10 +42,30 @@ def input():
             mundo.append(fila)
             try: 
                 y0 = fila.index(2)
-                x0 = i
-                print("x0: ", x0, "y0:", y0)
+                x0 = i  
+            except ValueError:
+                pass 
+            try:
+                if items_encontrados == 0:
+                    y = fila.index(5)
+                    print("fila: ", fila)
+                    print("i:",i)
+                    pos_item1['y'] = y  # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    pos_item1['x'] = i
+                    items_encontrados += 1 
+                    try: 
+                        pos_item2['y'] = fila.index(5, y+1) # [0 1 1 1 1 0 1 1 1 5]-> 9
+                        pos_item2['x'] = i
+                        items_encontrados += 1
+                    except ValueError:
+                        pass 
+                elif items_encontrados == 1:
+                    pos_item2['y'] = fila.index(5) # [0 1 1 1 1 0 1 1 1 5]-> 9
+                    pos_item2['x'] = i
+                    items_encontrados += 1  
             except ValueError:
                 pass
+
         return np.array(mundo)
 
 #configuración inicial de la pantalla
@@ -82,9 +109,9 @@ def pintar_mundo(mundo):
 
 #Clase utilizada para mostrar el robot en pantalla.
 class Robot():
-    def __init__(self, posx, posy, color, tam):
-        self.x = posy
-        self.y = posx
+    def __init__(self, x, y, color, tam):
+        self.x = y
+        self.y = x
         self.color = color
         self.tam = tam
     
@@ -103,6 +130,7 @@ class Robot():
         elif direccion == "abajo":
             self.y += self.tam
 
+
 # bucle infinito para mostrar en patalla todos los elementos gráficos.
 def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
     i = len(resultado)-1 #para recorrer la lista (resultado) de atrás hacia adelante
@@ -115,12 +143,22 @@ def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
             if event.type == pg.QUIT: #para detener la ejecución al cerrar la ventana
                 pg.quit()
                 sys.exit()
-      
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_p:
+                    pass
+            
+    
+
         if (i >= 0):            
-            pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
-            robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
-            print("combustible actual:", resultado[i][2])
-            robot.pintar()
+            try:
+                pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
+                robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
+                #print("combustible actual:", resultado[i][2])
+                #print("costo: ", resultado[i][3])
+                #print("heuristica: ", resultado[i][4])
+                robot.pintar()
+            except ValueError:
+                print("No se encontró la solución.")
 
         grid() #mostrar la cuadrícula.
         pg.display.flip() #actualizar el mundo para mostrar nuevos cambios.
@@ -141,8 +179,17 @@ pg.display.flip()
 
 #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
 start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
-resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+
+#resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
+#resultado = costo_uniforme(mundo, x0, y0)
+#print("x=",x0,"y0=",y0)
+#print("positem1:", pos_item1)
+#print("positem2:", pos_item2)
+#resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
+
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
+
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
 result = [x[0] for x in resultado]
 result.reverse()
