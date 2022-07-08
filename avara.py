@@ -65,7 +65,7 @@ def calcular_heuristica(nodo):
             print("encontró el item2")
             buscar_item2 = False
 
-        distancia_total = min((manhattan_item1 + distancia_items), (manhattan_item2 + distancia_items))  # manhattan_item1 + manhattan_item2 # no ha encontrado ningún ítem
+        distancia_total = min(manhattan_item1 , manhattan_item2) + distancia_items  # manhattan_item1 + manhattan_item2 # no ha encontrado ningún ítem
     return distancia_total
 
 def crear_hijos(nodo_padre):
