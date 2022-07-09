@@ -9,7 +9,7 @@ contador = 0
 # funcion que implementa el algoritmo de búsqueda preferente por amplitud.
 def costo_uniforme(matriz, x, y):
     start = time.perf_counter()
-    global cola_prioridad, nodos_expandidos, resultado
+    global cola_prioridad, nodos_expandidos, camino, profundidad, costo
 
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0)
     cola_prioridad.put(nodo_raiz)
@@ -22,17 +22,19 @@ def costo_uniforme(matriz, x, y):
         cabeza = cola_prioridad.get()
         nodos_expandidos += 1
         
-        if cabeza.es_meta():
+        if cabeza.es_meta(): 
+            costo = cabeza.costo
+            profundidad = cabeza.profundidad
+            camino = cabeza.encontrar_camino() 
             print("nodos expandidos: ", nodos_expandidos)
-            print("profundidad: ", cabeza.profundidad)
-            print("costo:", cabeza.costo)
-            resultado = cabeza.encontrar_camino() 
+            print("profundidad: ", profundidad)
+            print("costo:", costo)
             break
-        crear_hijos(cabeza)  
+        crear_hijos(cabeza)         
     end = time.perf_counter()
-    tiempo = end-start 
-    print("tiempo en algoritmo: ", tiempo)   
-    return resultado, tiempo             
+    tiempo = end-start
+    print("tiempo en algoritmo: ", tiempo)
+    return [camino, nodos_expandidos, profundidad, tiempo, costo]            
 
 def crear_hijos(nodo_padre):
     global contador 
@@ -65,7 +67,9 @@ def crear_hijos(nodo_padre):
             se_devuelve = nodo_padre.operador == opuesto_de[op_actual]
             if (nodo_padre.nodo_padre):
                 tipo_nave_diferentes = nodo_padre.nave != nave_hijo
-                casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
+                casilla_siguiente_nave = False
+                if not nave_hijo: 
+                    casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
 
             if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 

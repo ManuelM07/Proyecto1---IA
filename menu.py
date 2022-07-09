@@ -15,7 +15,7 @@ from algoritmos.algoritmo_estrella import estrella
 
 pg.init()
 WIDTH = 640 #ancho
-EXTRA_WIDTH = 300 # espacio extra en el ancho para el panel derecho.
+EXTRA_WIDTH = 400 # espacio extra en el ancho para el panel derecho.
 TOTAL_WIDTH = WIDTH+EXTRA_WIDTH
 HEIGHT = WIDTH # alto
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -136,16 +136,16 @@ def game(SCREEN, algoritmo):
         while True:
 
             NODOS_EXPANDIDOS = get_font(13).render(f"nodos expandidos: {valores[1]}", True, "Black")
-            NODOS_RECT = NODOS_EXPANDIDOS.get_rect(center=(785, 200))
+            NODOS_RECT = NODOS_EXPANDIDOS.get_rect(center=(790, 200))
 
             PROFUNDIDAD = get_font(13).render(f"profunidad: {valores[2]}", True, "Black")
-            PROFUNDIDAD_RECT = NODOS_EXPANDIDOS.get_rect(center=(785, 250))
+            PROFUNDIDAD_RECT = NODOS_EXPANDIDOS.get_rect(center=(790, 250))
 
             TIEMPO = get_font(13).render(f"tiempo: {valores[3]}", True, "Black")
-            TIEMPO_RECT = NODOS_EXPANDIDOS.get_rect(center=(785, 300))
+            TIEMPO_RECT = NODOS_EXPANDIDOS.get_rect(center=(790, 300))
 
             COSTO = get_font(13).render(f"costo: {valores[4]}", True, "Black")
-            COSTO_RECT = NODOS_EXPANDIDOS.get_rect(center=(785, 350))
+            COSTO_RECT = NODOS_EXPANDIDOS.get_rect(center=(790, 350))
 
             OPTIONS_MOUSE_POS = pg.mouse.get_pos()
             clock.tick(ticks) 

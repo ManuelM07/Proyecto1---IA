@@ -165,4 +165,4 @@ def game(algoritmo):
 
     mostrar_juego(resultado) #mostrar el juego en pantalla.
 
-game("amplitud")
+game("profundidad")
