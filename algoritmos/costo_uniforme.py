@@ -1,5 +1,6 @@
 from algoritmos.nodo import Nodo, operadores
 import queue
+import time
 
 cola_prioridad = queue.PriorityQueue() # importante tener cuidado con el límite 
 nodos_expandidos = 0
@@ -7,12 +8,12 @@ contador = 0
 
 # funcion que implementa el algoritmo de búsqueda preferente por amplitud.
 def costo_uniforme(matriz, x, y):
-    
-    global cola_prioridad, nodos_expandidos
+    start = time.perf_counter()
+    global cola_prioridad, nodos_expandidos, resultado
 
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0)
     cola_prioridad.put(nodo_raiz)
-
+     
     while True: 
         if cola_prioridad.empty():
             print("No se ha encontrado el camino.")
@@ -25,15 +26,22 @@ def costo_uniforme(matriz, x, y):
             print("nodos expandidos: ", nodos_expandidos)
             print("profundidad: ", cabeza.profundidad)
             print("costo:", cabeza.costo)
-            return cabeza.encontrar_camino() 
-        crear_hijos(cabeza)            
+            resultado = cabeza.encontrar_camino() 
+            break
+        crear_hijos(cabeza)  
+    end = time.perf_counter()
+    tiempo = end-start 
+    print("tiempo en algoritmo: ", tiempo)   
+    return resultado, tiempo             
 
 def crear_hijos(nodo_padre):
     global contador 
     global cola_prioridad
 
     contador += 1
-    nave_hijo, nuevo_combustible = nodo_padre.validar_nave() 
+    nave_hijo = nodo_padre.validar_nave() 
+    nuevo_combustible = nodo_padre.combustible-1 if nave_hijo else 0
+
     matriz_copia = nodo_padre.matriz.copy()
     aux_profundidad = nodo_padre.profundidad + 1 
     costo_padre = nodo_padre.costo
@@ -56,9 +64,10 @@ def crear_hijos(nodo_padre):
         if (casilla_siguiente != -1 and casilla_siguiente != 1):
             se_devuelve = nodo_padre.operador == opuesto_de[op_actual]
             if (nodo_padre.nodo_padre):
-                tipo_nave_diferentes = nodo_padre.nodo_padre.nave != nave_hijo
-            
-            if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado)) or not se_devuelve):
+                tipo_nave_diferentes = nodo_padre.nave != nave_hijo
+                casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
+
+            if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 
                 nuevo_x = nuevas_posiciones[op_actual][0] # 0 -> x
                 nuevo_y = nuevas_posiciones[op_actual][1] # 1 -> y

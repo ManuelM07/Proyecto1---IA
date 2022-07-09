@@ -7,19 +7,17 @@ nodos_expandidos = 0
 contador = 0
 pos_item1 = {}
 pos_item2 = {}
-#nodo.buscar_item1 = True
-#nodo.buscar_item2 = True 
 distancia_items = 0  
 
 # funcion que implementa el algoritmo de búsqueda preferente por amplitud.
-def avara(matriz, x, y, posItem1, posItem2):
+def estrella(matriz, x, y, posItem1, posItem2):
     start = time.perf_counter()
     global cola_prioridad, nodos_expandidos, pos_item1, pos_item2, distancia_items, profundidad, costo, camino
 
     pos_item1 = posItem1
     pos_item2 = posItem2
 
-    nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0, algoritmo_avara=True)
+    nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0)
     cola_prioridad.put(nodo_raiz)
 
     distancia_items = manhattan(pos_item1["x"], pos_item1["y"], pos_item2["x"], pos_item2["y"])
@@ -28,12 +26,11 @@ def avara(matriz, x, y, posItem1, posItem2):
         if cola_prioridad.empty():
             print("No se ha encontrado el camino.")
             exit(-1)
-            return "falla"
+            return "Falla"
         cabeza = cola_prioridad.get()
         nodos_expandidos += 1
         
-        if cabeza.es_meta():
-            
+        if cabeza.es_meta(): 
             costo = cabeza.costo
             profundidad = cabeza.profundidad
             camino = cabeza.encontrar_camino() 
@@ -41,11 +38,11 @@ def avara(matriz, x, y, posItem1, posItem2):
             print("profundidad: ", profundidad)
             print("costo:", costo)
             break
-        crear_hijos(cabeza)          
+        crear_hijos(cabeza)         
     end = time.perf_counter()
     tiempo = end-start
     print("tiempo en algoritmo: ", tiempo)
-    return camino, nodos_expandidos, profundidad, tiempo, costo  
+    return [camino, nodos_expandidos, profundidad, tiempo, costo   ]       
 
 # función que calcula la distancia de manhattan de un nodo con respecto a un ítem.
 def manhattan(x1, y1, x2, y2): # nodo, pos_item
@@ -69,13 +66,12 @@ def calcular_heuristica(nodo):
         manhattan_item2 = manhattan(nodo.x, nodo.y, pos_item2["x"], pos_item2['y'])
         if manhattan_item1 == 0:
             nodo.buscar_item1 = False
-            print("encontró el item1")
         elif manhattan_item2 == 0:
-            print("encontró el item2")
             nodo.buscar_item2 = False
 
         distancia_total = min(manhattan_item1 , manhattan_item2) + distancia_items  # manhattan_item1 + manhattan_item2 # no ha encontrado ningún ítem
     return distancia_total
+
 
 def crear_hijos(nodo_padre):
     global contador 
@@ -118,7 +114,7 @@ def crear_hijos(nodo_padre):
                 nuevo_x = nuevas_posiciones[op_actual][0] # 0 -> x
                 nuevo_y = nuevas_posiciones[op_actual][1] # 1 -> y
 
-                new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, op_actual, aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, algoritmo_avara=True, buscar_item1=nodo_padre.buscar_item1, buscar_item2=nodo_padre.buscar_item2)
+                new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, op_actual, aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, buscar_item1=nodo_padre.buscar_item1, buscar_item2=nodo_padre.buscar_item2)
                 new_nodo.actualizar_estado_casilla()
                 new_nodo.heuristica = calcular_heuristica(new_nodo)
-                cola_prioridad.put(new_nodo)              
+                cola_prioridad.put(new_nodo)

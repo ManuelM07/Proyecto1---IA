@@ -1,11 +1,15 @@
 import pygame as pg
 import sys, os
-import numpy as np
-from algoritmos.avara import avara
-from algoritmos.costo_uniforme import costo_uniforme
-from algoritmos.preferencia_amplitud import preferencia_amplitud
 import time
+import numpy as np
+
 from juego.robot import Robot
+
+from algoritmos.preferencia_amplitud import preferencia_amplitud
+from algoritmos.costo_uniforme import costo_uniforme
+from algoritmos.preferente_profundidad import preferente_profundidad
+from algoritmos.avara import avara
+from algoritmos.algoritmo_estrella import estrella
 
 n = 10 #matriz nxn
 nombre_lectura = "mundo" #nombre del archivo txt sin .txt
@@ -30,7 +34,7 @@ encuentra y establece la posición inicial del robot (x0, y0).
 pos_item1 = {'x': 0, 'y': 0}
 pos_item2 = {'x': 0, 'y': 0}
 
-def game(): 
+def game(algoritmo): 
 
     def input():
         global x0, y0, pos_item1, pos_item2
@@ -106,12 +110,11 @@ def game():
             y += tam
 
     # bucle infinito para mostrar en patalla todos los elementos gráficos.
-    def mostrar_juego(resultado): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
-        
+    def mostrar_juego(valores): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
+        resultado = valores[0]
         i = len(resultado)-1 #para recorrer la lista (resultado) de atrás hacia adelante
         
         while True:
-
             clock.tick(ticks) 
 
             for event in pg.event.get():
@@ -121,14 +124,12 @@ def game():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_p:
                         pass
-                
-        
 
             if (i >= 0):            
                 try:
                     pintar_mundo(resultado[i][1]) #pinta el mundo correspondiente al nodo actual.
                     robot.mover(resultado[i][0]) #se obtiene el operador para mover el robot. 
-                    print("combustible actual:", resultado[i][2])
+                    #print("combustible actual:", resultado[i][2])
                     #print("costo: ", resultado[i][3])
                     #print("heuristica: ", resultado[i][4])
                     robot.pintar()
@@ -136,9 +137,9 @@ def game():
                     print("No se encontró la solución.")
 
             grid() #mostrar la cuadrícula.
-            pg.display.flip() #actualizar el mundo para mostrar nuevos cambios.
             i -= 1 
-
+            pg.display.update()
+            pg.display.flip() #actualizar el mundo para mostrar nuevos cambios.
 
     # Inicio
     setup() #pantalla
@@ -151,19 +152,17 @@ def game():
     robot.pintar()
     grid()
     pg.display.flip()
+    if algoritmo == "amplitud":
+        resultado = preferencia_amplitud(mundo, x0, y0)
+    elif algoritmo == "costo":
+        resultado = costo_uniforme(mundo, x0, y0)
+    elif algoritmo == "profundidad":
+        resultado = preferente_profundidad(mundo, x0, y0)
+    elif algoritmo == "avara":
+        resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
+    elif algoritmo == "estrella":
+        resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
 
-    #obtener el resultado (camino y mundos) y determinar el tiempo de ejecucion del algoritmo.
-    start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
+    mostrar_juego(resultado) #mostrar el juego en pantalla.
 
-    resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-    #resultado = costo_uniforme(mundo, x0, y0)
-    #resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
-
-    end = time.perf_counter() #tiempo final. nueva cantidad en segundos
-
-    print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
-
-    #mostrar el juego en pantalla.
-    mostrar_juego(resultado)
-
-game()
+game("amplitud")
