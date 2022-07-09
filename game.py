@@ -6,7 +6,6 @@ from preferente_profundidad import preferente_profundidad
 from preferencia_amplitud import preferencia_amplitud
 from preferente_profundidad import preferente_profundidad
 from avara import avara
-from a_estrella import a_estrella
 from costo_uniforme import costo_uniforme
 from algoritmo_estrella import estrella
 import time
@@ -18,7 +17,7 @@ alto = ancho
 size = ancho // n #tamaño del lado de cada cuadrado
 x0 = 0
 y0 = 0
-ticks = 5 #velocidad del reloj, mayor valor -> mayor velocidad.
+ticks = 2 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
             -1:(255,255,255), # -1 -> muro
@@ -26,9 +25,7 @@ colores = { 0:(255,255,255), # 0 -> casilla libre
             -2:(0,230,230), # -2 -> punto de inicio
             2:(0,230,230), # 2 -> punto de inicio
             3:(0, 255, 0), # 3 -> nave1
-            #-3:(0, 255, 0), # 3 -> nave1
             4:(204,204,255), # 4 -> nave2
-            #-4:(204,204,255), # 4 -> nave2
             5:(255,255,0), # 5 -> item 
             -6:(255,0,0), # -6 -> aceite
             6:(255,0,0) } # 6 -> aceite
@@ -197,8 +194,8 @@ start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 
 
 #resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-#resultado = costo_uniforme(mundo, x0, y0)
-resultado = preferente_profundidad(mundo, x0, y0)
+resultado = costo_uniforme(mundo, x0, y0)
+#resultado = preferente_profundidad(mundo, x0, y0)
 #resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
 #resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
 

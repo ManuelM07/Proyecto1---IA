@@ -61,17 +61,16 @@ def crear_hijos(nodo_padre):
             se_devuelve = nodo_padre.operador == opuesto_de[operadores[i]]
             if (nodo_padre.nodo_padre):
                 tipo_nave_diferentes = nodo_padre.nave != nave_hijo
-            
-            if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado)) or not se_devuelve):
+                casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
+
+            if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 
                 nuevo_x = nuevas_posiciones[operadores[i]][0] # 0 -> x
                 nuevo_y = nuevas_posiciones[operadores[i]][1] # 1 -> y
 
                 new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, operadores[i], aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item, nodo_padre.matriz_aux)
                 new_nodo.actualizar_estado_casilla()
-                print(matriz_copia)
                 cola.insert(0, new_nodo)
-
 
 def validar_cambio_matriz(nodo_padre, matriz, x, y):
     """ Se valida si es necesario hacer un cambio a la matriz,

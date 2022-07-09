@@ -2,11 +2,11 @@ import numpy as np
 import functools
 
 total_items = 2
-operadores = ["arriba", "izquierda", "abajo", "derecha",]
-
+operadores = ["arriba", "izquierda", "derecha", "abajo",]
+#operadores = ["derecha", "abajo", "izquierda", "arriba"]
 class Nodo:
     
-    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item, matriz_aux=None) -> None:
+    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item, matriz_aux=None, algoritmo_avara=False, buscar_item1=True, buscar_item2=True) -> None:
         self.matriz = np.array(matriz)
         self.x = x
         self.y = y
@@ -21,6 +21,10 @@ class Nodo:
         self.cantidad_item = cantidad_item
         self.item_encontrado = False
         self.matriz_aux = np.array(matriz_aux)
+        self.algoritmo_avara = algoritmo_avara
+        self.buscar_item1 = buscar_item1
+        self.buscar_item2 = buscar_item2
+
 
     #método que comprueba si este nodo es meta, True si es meta, False en caso contrario.
     def es_meta(self) -> bool:
@@ -34,13 +38,12 @@ class Nodo:
         encuentra en la posición actual del nodo (una nave o un ítem).
         """
 
-        print(self.x, self.y)
         casilla_actual = self.matriz[self.x][self.y]
         
         #if self.combustible == 0:
          #   self.nave = False
 
-        if casilla_actual == 3 or casilla_actual == 4: #valida si es una nave
+        if casilla_actual == 3 or casilla_actual == 4 and not self.nave: #valida si es una nave
             self.combustible = 11 if casilla_actual == 3 else 21
             self.matriz[self.x][self.y] = 0 #una vez obtenida la nave, donde estaba debe haber un 0.
             self.nave = True
@@ -54,6 +57,8 @@ class Nodo:
             self.costo += 4
         else:
             self.costo += 1
+
+        
 
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
@@ -89,4 +94,6 @@ class Nodo:
         } 
 
     def __lt__(self, other):
+        if self.algoritmo_avara:
+            return (self.heuristica < other.heuristica)
         return ((self.heuristica + self.costo) < (other.heuristica + other.costo))
