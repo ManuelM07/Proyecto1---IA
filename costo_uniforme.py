@@ -16,8 +16,7 @@ def costo_uniforme(matriz, x, y):
     while True: 
         if cola_prioridad.empty():
             print("No se ha encontrado el camino.")
-            exit(-1)
-            return "Falla"
+            return "falla"
         cabeza = cola_prioridad.get()
         nodos_expandidos += 1
         

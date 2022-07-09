@@ -8,13 +8,13 @@ nodos_expandidos = 0
 def preferente_profundidad(matriz, x, y):
     global cola, nodos_expandidos
 
-        
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0, matriz)
     cola.append(nodo_raiz)
 
     while True: 
         if cola == []:
-            return "Falla"
+            print("No se ha encontrado el camino.")
+            return "falla"
         cabeza = cola[0]
         nodos_expandidos += 1
         cola = cola[1:]

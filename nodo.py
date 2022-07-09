@@ -2,7 +2,7 @@ import numpy as np
 import functools
 
 total_items = 2
-operadores = ["arriba", "izquierda", "derecha", "abajo",]
+operadores = ["arriba", "izquierda", "abajo", "derecha",]
 #operadores = ["derecha", "abajo", "izquierda", "arriba"]
 class Nodo:
     
@@ -37,11 +37,7 @@ class Nodo:
         método para obtener (si corresponde) el elemento que se 
         encuentra en la posición actual del nodo (una nave o un ítem).
         """
-
         casilla_actual = self.matriz[self.x][self.y]
-        
-        #if self.combustible == 0:
-         #   self.nave = False
 
         if casilla_actual == 3 or casilla_actual == 4 and not self.nave: #valida si es una nave
             self.combustible = 11 if casilla_actual == 3 else 21
@@ -59,7 +55,6 @@ class Nodo:
             self.costo += 1
 
         
-
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
         if self.nave:  

@@ -54,8 +54,6 @@ def input():
             try:
                 if items_encontrados == 0:
                     y = fila.index(5)
-                    print("fila: ", fila)
-                    print("i:",i)
                     pos_item1['y'] = y  # [0 1 1 1 1 0 1 1 1 5]-> 9
                     pos_item1['x'] = i
                     items_encontrados += 1 
@@ -188,30 +186,16 @@ start = time.perf_counter() #tiempo inicial.-> cantidad en segundos
 
 #resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
 #resultado = costo_uniforme(mundo, x0, y0)
-#print("x=",x0,"y0=",y0)
-#print("positem1:", pos_item1)
-#print("positem2:", pos_item2)
-
-
-#resultado = preferencia_amplitud(mundo, x0, y0) #llamado a la funcion del algoritmo.
-resultado = costo_uniforme(mundo, x0, y0)
 #resultado = preferente_profundidad(mundo, x0, y0)
 #resultado = avara(mundo, x0, y0, pos_item1, pos_item2)
-#resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
-
-
-end = time.perf_counter() #tiempo final. nueva cantidad en segundos
-
-print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
-result = [x[0] for x in resultado]
-result.reverse()
-print(result)
+resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
 
 end = time.perf_counter() #tiempo final. nueva cantidad en segundos
-
 print("tiempo: ", end-start) #se muestra el tiempo transcurrido.
+
 movimientos = [x[0] for x in resultado]
 movimientos.reverse()
 print("movimientos:", movimientos)
+
 #mostrar el juego en pantalla.
 mostrar_juego(resultado)

@@ -14,7 +14,8 @@ def preferencia_amplitud(matriz, x, y):
     #print("Soy el nodo raiz con inicio x: ", nodo_raiz.x, ", y: ", nodo_raiz.y)
     while True: 
         if cola == []:
-            return "Falla"
+            print("No se ha encontrado el camino.")
+            return "falla"
         cabeza = cola[0]
         nodos_expandidos = nodos_expandidos + 1
         cola = cola[1:]
@@ -59,7 +60,9 @@ def crear_hijos(nodo_padre):
             se_devuelve = nodo_padre.operador == opuesto_de[op_actual]
             if (nodo_padre.nodo_padre):
                 tipo_nave_diferentes = nodo_padre.nave != nave_hijo
-                casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
+                casilla_siguiente_nave = False
+                if not nave_hijo:
+                    casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
 
             if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 
@@ -68,4 +71,5 @@ def crear_hijos(nodo_padre):
 
                 new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, op_actual, aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 new_nodo.actualizar_estado_casilla()
+                print(" soy el nodo ", new_nodo)
                 cola.append(new_nodo)

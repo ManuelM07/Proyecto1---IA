@@ -26,8 +26,7 @@ def avara(matriz, x, y, posItem1, posItem2):
     while True: 
         if cola_prioridad.empty():
             print("No se ha encontrado el camino.")
-            exit(-1)
-            return "Falla"
+            return "falla"
         cabeza = cola_prioridad.get()
         nodos_expandidos += 1
         
@@ -102,7 +101,9 @@ def crear_hijos(nodo_padre):
             se_devuelve = nodo_padre.operador == opuesto_de[op_actual]
             if (nodo_padre.nodo_padre):
                 tipo_nave_diferentes = nodo_padre.nave != nave_hijo
-                casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
+                casilla_siguiente_nave = False
+                if not nave_hijo:
+                    casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
 
             if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 
