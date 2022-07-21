@@ -1,4 +1,5 @@
-from nodo import Nodo, operadores
+from algoritmos.nodo import Nodo, operadores
+import time
 
 cola = []
 nodos_expandidos = 0
@@ -6,27 +7,32 @@ contador = 0
 
 # funcion que implementa el algoritmo de búsqueda preferente por amplitud.
 def preferencia_amplitud(matriz, x, y):
-    
-    global cola, nodos_expandidos
+    start = time.perf_counter()
+    global cola, nodos_expandidos, profundidad, costo, camino
 
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0)
     cola.append(nodo_raiz)
     #print("Soy el nodo raiz con inicio x: ", nodo_raiz.x, ", y: ", nodo_raiz.y)
     while True: 
         if cola == []:
-            print("No se ha encontrado el camino.")
-            return "falla"
+            return "Falla"
         cabeza = cola[0]
         nodos_expandidos = nodos_expandidos + 1
         cola = cola[1:]
         #cabeza.actualizar_estado_casilla()
-        if cabeza.es_meta():
+        if cabeza.es_meta(): 
+            costo = cabeza.costo
+            profundidad = cabeza.profundidad
+            camino = cabeza.encontrar_camino() 
             print("nodos expandidos: ", nodos_expandidos)
-            print("profundidad: ", cabeza.profundidad)
-            print("costo:", cabeza.costo)
-            return cabeza.encontrar_camino() 
-
-        crear_hijos(cabeza)            
+            print("profundidad: ", profundidad)
+            print("costo:", costo)
+            break
+        crear_hijos(cabeza)         
+    end = time.perf_counter()
+    tiempo = end-start
+    print("tiempo en algoritmo: ", tiempo)
+    return [camino, nodos_expandidos, profundidad, tiempo, costo]            
 
 
 def crear_hijos(nodo_padre):
@@ -71,5 +77,4 @@ def crear_hijos(nodo_padre):
 
                 new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, op_actual, aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 new_nodo.actualizar_estado_casilla()
-                print(" soy el nodo ", new_nodo)
                 cola.append(new_nodo)

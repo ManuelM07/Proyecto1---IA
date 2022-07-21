@@ -1,30 +1,37 @@
-from nodo import Nodo, operadores
+﻿from algoritmos.nodo import Nodo, operadores
 import numpy as np
+import time
 
 cola = []
 nodos_expandidos = 0
 
 # funcion que implementa el algoritmo de búsqueda preferente por profundidad.
 def preferente_profundidad(matriz, x, y):
-    global cola, nodos_expandidos
-
+    start = time.perf_counter()
+    global cola, nodos_expandidos, camino, profundidad, costo
+        
     nodo_raiz = Nodo(matriz, x, y, None, None, 0, 0, False, 0, 0, matriz)
     cola.append(nodo_raiz)
 
     while True: 
         if cola == []:
-            print("No se ha encontrado el camino.")
-            return "falla"
+            return "Falla"
         cabeza = cola[0]
         nodos_expandidos += 1
         cola = cola[1:]
-        if cabeza.es_meta():
+        if cabeza.es_meta(): 
+            costo = cabeza.costo
+            profundidad = cabeza.profundidad
+            camino = cabeza.encontrar_camino() 
             print("nodos expandidos: ", nodos_expandidos)
-            print("profundidad: ", cabeza.profundidad)
-            print("costo:", cabeza.costo)
-            return cabeza.encontrar_camino() 
-        crear_hijos(cabeza)            
-
+            print("profundidad: ", profundidad)
+            print("costo:", costo)
+            break
+        crear_hijos(cabeza)         
+    end = time.perf_counter()
+    tiempo = end-start
+    print("tiempo en algoritmo: ", tiempo)
+    return [camino, nodos_expandidos, profundidad, tiempo, costo]   
 
 def crear_hijos(nodo_padre):
 
@@ -61,7 +68,9 @@ def crear_hijos(nodo_padre):
             se_devuelve = nodo_padre.operador == opuesto_de[operadores[i]]
             if (nodo_padre.nodo_padre):
                 tipo_nave_diferentes = nodo_padre.nave != nave_hijo
-                casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
+                casilla_siguiente_nave = False
+                if not nave_hijo:
+                    casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
 
             if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 
