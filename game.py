@@ -21,12 +21,18 @@ y0 = 0
 ticks = 3 #velocidad del reloj, mayor valor -> mayor velocidad.
 
 colores = { 0:(255,255,255), # 0 -> casilla libre
-            1:(150,75,0), # 1 -> muro
-            2:(0,230,230), # 2 -> punto de inicio
-            3:(0, 255, 0), # 3 -> nave1
-            4:(204,204,255), # 4 -> nave2
-            5:(255,255,0), # 5 -> item 
-            6:(255,0,0) } # 6 -> aceite
+            1:(150,75,0),
+            -1:(255,255,255), # 1 -> muro
+            2:(0,230,230),
+            -2:(0,230,230), # 2 -> punto de inicio
+            3:(0, 255, 0),
+            #-3:(0, 255, 0), # 3 -> nave1
+            4:(204,204,255),
+            #-4:(204,204,255), # 4 -> nave2
+            5:(255,255,0),
+            #-5:(255,255,0), # 5 -> item 
+            6:(255,0,0),
+            -6:(255,0,0) } # 6 -> aceite
 '''
 input: lee el archivo .txt y carga el mundo en un array de numpy y
 encuentra y establece la posición inicial del robot (x0, y0).
@@ -112,6 +118,7 @@ def game(algoritmo):
     # bucle infinito para mostrar en patalla todos los elementos gráficos.
     def mostrar_juego(valores): # resultado = [nodo5, nodo4, nodo3, nodo2, nodo1]
         resultado = valores[0]
+        #print("resultado. ", resultado)
         i = len(resultado)-1 #para recorrer la lista (resultado) de atrás hacia adelante
         
         while True:
@@ -163,6 +170,7 @@ def game(algoritmo):
     elif algoritmo == "estrella":
         resultado = estrella(mundo, x0, y0, pos_item1, pos_item2)
 
+    print(resultado)
     mostrar_juego(resultado) #mostrar el juego en pantalla.
 
 game("profundidad")

@@ -2,11 +2,11 @@ import numpy as np
 import functools
 
 total_items = 2
-operadores = ["arriba", "izquierda", "derecha", "abajo",]
+operadores = ["izquierda", "derecha", "arriba", "abajo",]
 #operadores = ["derecha", "abajo", "izquierda", "arriba"]
 class Nodo:
     
-    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item, matriz_aux=None, algoritmo_avara=False, buscar_item1=True, buscar_item2=True) -> None:
+    def __init__(self, matriz, x, y, nodo_padre, operador, profundidad, costo, nave, combustible, cantidad_item, matriz_aux=None, algoritmo_avara=False, buscar_item1=True, buscar_item2=True, count_aux=None) -> None:
         self.matriz = np.array(matriz)
         self.x = x
         self.y = y
@@ -24,7 +24,7 @@ class Nodo:
         self.algoritmo_avara = algoritmo_avara
         self.buscar_item1 = buscar_item1
         self.buscar_item2 = buscar_item2
-
+        self.count_aux = count_aux
 
     #método que comprueba si este nodo es meta, True si es meta, False en caso contrario.
     def es_meta(self) -> bool:
@@ -37,13 +37,9 @@ class Nodo:
         método para obtener (si corresponde) el elemento que se 
         encuentra en la posición actual del nodo (una nave o un ítem).
         """
-
         casilla_actual = self.matriz[self.x][self.y]
-        
-        #if self.combustible == 0:
-         #   self.nave = False
 
-        if casilla_actual == 3 or casilla_actual == 4 and not self.nave: #valida si es una nave
+        if (casilla_actual == 4 or casilla_actual == 3) and not self.nave: #valida si es una nave
             self.combustible = 11 if casilla_actual == 3 else 21
             self.matriz[self.x][self.y] = 0 #una vez obtenida la nave, donde estaba debe haber un 0.
             self.nave = True
@@ -53,13 +49,12 @@ class Nodo:
             self.item_encontrado = True
         
         # se calcula el costo del movimiento.
-        if casilla_actual == 6 and not self.nave:
+        if casilla_actual == 6 and self.combustible == 0:
             self.costo += 4
         else:
             self.costo += 1
 
         
-
     #método para saber si el nodo hijo tiene o no nave.
     def validar_nave(self) -> None:
         if self.nave:  
@@ -78,6 +73,20 @@ class Nodo:
             return []
         else:    
             return [[self.operador, self.matriz, self.combustible, self.costo, self.heuristica]] + self.nodo_padre.encontrar_camino() 
+
+
+    def encontrar_camino_aux(self) -> list:
+        '''
+        método que retorna una lista con parejas (operador, mundo), correspondientes al camino
+        para llegar a la meta y el estado del mundo en cada nodo.
+        '''
+        #print("combustible actual:", self.combustible)
+        if self.nodo_padre is None:
+            return []
+        else:    
+            return [self.nave, [self.operador]] + self.nodo_padre.encontrar_camino_aux() 
+    
+
 
     #método que verifica que en cada dirección no se salga de la matriz.
     def validar_direcciones(self, x, y):

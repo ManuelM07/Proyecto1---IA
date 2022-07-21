@@ -29,6 +29,7 @@ def costo_uniforme(matriz, x, y):
             print("nodos expandidos: ", nodos_expandidos)
             print("profundidad: ", profundidad)
             print("costo:", costo)
+            print(cabeza.encontrar_camino_aux())
             break
         crear_hijos(cabeza)         
     end = time.perf_counter()
@@ -59,6 +60,7 @@ def crear_hijos(nodo_padre):
 
     nuevas_posiciones = { "arriba": [x-1, y], "abajo": [x+1, y], "izquierda": [x, y-1], "derecha": [x, y+1] }
 
+    print(f"coorx: {x}, coory: {y}")
     for op_actual in operadores: # ["derecha", "izquierda", etc]
         #contrario = anterior, ej: actual = arriba -> contrario = abajo
         casilla_siguiente = valores_casillas[op_actual] # guarda el valor de la casilla siguiente (en la que está cada hijo).
@@ -66,12 +68,12 @@ def crear_hijos(nodo_padre):
         if (casilla_siguiente != -1 and casilla_siguiente != 1):
             se_devuelve = nodo_padre.operador == opuesto_de[op_actual]
             if (nodo_padre.nodo_padre):
-                tipo_nave_diferentes = nodo_padre.nave != nave_hijo
+                tipo_nave_diferentes = nodo_padre.nodo_padre.nave != nave_hijo
                 casilla_siguiente_nave = False
                 if not nave_hijo: 
                     casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
 
-            if ( (se_devuelve and ( tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
+            if ( (se_devuelve and (tipo_nave_diferentes or nodo_padre.item_encontrado or casilla_siguiente_nave)) or not se_devuelve):
 
                 nuevo_x = nuevas_posiciones[op_actual][0] # 0 -> x
                 nuevo_y = nuevas_posiciones[op_actual][1] # 1 -> y
@@ -79,3 +81,4 @@ def crear_hijos(nodo_padre):
                 new_nodo = Nodo(matriz_copia, nuevo_x, nuevo_y, nodo_padre, op_actual, aux_profundidad, costo_padre, nave_hijo, nuevo_combustible, nodo_padre.cantidad_item)
                 new_nodo.actualizar_estado_casilla()
                 cola_prioridad.put(new_nodo)
+            

@@ -106,7 +106,7 @@ def crear_hijos(nodo_padre):
         if (casilla_siguiente != -1 and casilla_siguiente != 1):
             se_devuelve = nodo_padre.operador == opuesto_de[op_actual]
             if (nodo_padre.nodo_padre):
-                tipo_nave_diferentes = nodo_padre.nave != nave_hijo
+                tipo_nave_diferentes = nodo_padre.nodo_padre.nave != nave_hijo
                 casilla_siguiente_nave = False
                 if not nave_hijo:
                     casilla_siguiente_nave = nodo_padre.nave != (casilla_siguiente == 3 or casilla_siguiente == 4)
