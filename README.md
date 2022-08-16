@@ -5,7 +5,7 @@ usar y que facilitan la exploración del lugar pero también existe un elemento 
 
 ![image](https://user-images.githubusercontent.com/83485551/180325615-b785b9af-640b-433a-b802-df4586b76ce1.png)
 
-Se implementan 5 tipos de algoritmos para llegar a la solución. 3 de búsquedad No informada y 2 de Informada.
+Se implementan 5 tipos de algoritmos para llegar a la solución. 3 de búsquedad No informada y 2 de Informada. 
 
 
 ## Requirements
